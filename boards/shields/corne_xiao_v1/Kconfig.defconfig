@@ -42,4 +42,8 @@ endchoice
 
 endif # LVGL
 
+choice ZMK_DISPLAY_STATUS_SCREEN
+    default ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN
+endchoice
+
 endif
