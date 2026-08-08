@@ -43,7 +43,7 @@
         nav_layer {
             display-name = "Navigation";
             bindings = <
-   &trans &none &none &none &none &none     &none &kp BTAB &none &none &kp TAB &none
+   &trans &none &none &none &none &none     &none &kp LS(TAB) &none &none &kp TAB &none
    &trans &none &none &none &none &none     &none &none &kp HOME &kp PG_DN &kp PG_UP &kp END
    &trans &none &none &none &none &kp LG(B) &none &kp LEFT &kp DOWN &kp UP &kp RIGHT &none
                    &none &none &tog L_NAV     &none &kp BSPC &none
@@ -93,7 +93,7 @@
         button_layer {
             display-name = "Buttons";
             bindings = <
-   &none &kp BTAB &kp TAB &none &kp TAB &none     &none &none &none &none &none &none
+   &none &kp LS(TAB) &kp TAB &none &kp TAB &none     &none &none &none &none &none &none
    &none &kp LG(TAB) &kp LG(W) &kp TAB &kp LG(TAB) &none     &none &none &none &none &none &none
    &none &kp LG(Z) &kp LG(X) &kp LG(C) &kp LG(V) &none     &none &none &none &none &none &none
               &none &none &tog L_BUT     &none &none &none
