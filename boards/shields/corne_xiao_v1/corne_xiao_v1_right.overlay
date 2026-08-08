@@ -14,7 +14,3 @@
         , <&xiao_d 6 GPIO_ACTIVE_HIGH>
         ;
 };
-
-&right_encoder {
-    status = "okay";
-};
