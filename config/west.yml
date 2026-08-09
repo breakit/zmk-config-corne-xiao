@@ -19,7 +19,7 @@ manifest:
     - name: zmk-tri-state
       remote: dhruvinsh
       revision: main
-      path: .west/repos/zmk-tri-state
+      path: modules/zmk-tri-state
     - name: zmk-helpers
       remote: urob
       revision: 0b9e9d1dd9e86f70b4c8c2b0fab55c4f90c9d2e3
