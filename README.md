@@ -56,7 +56,7 @@ There are **8 layers**. Placeholders/layer activation keys are marked in the SVG
 
 ### Layer 0 — QWERTY (base)
 
-<p align="center"><img src="media/layer0-main.svg" width="640" alt="QWERTY layer"></p>
+![QWERTY layer](media/layer0-main.svg)
 
 The default layer.
 
@@ -71,7 +71,7 @@ The default layer.
 
 ### Layer 1 — Navigation (Windows)
 
-<p align="center"><img src="media/layer1-navigation.svg" width="640" alt="Navigation layer"></p>
+![Navigation layer](media/layer1-navigation.svg)
 
 Cursor and window-management shortcuts.
 
@@ -85,7 +85,7 @@ Cursor and window-management shortcuts.
 
 ### Layer 2 — Numbers
 
-<p align="center"><img src="media/layer2-numbers.svg" width="640" alt="Numbers layer"></p>
+![Numbers layer](media/layer2-numbers.svg)
 
 A number block laid out over two rows (5 keys each) instead of a classic numpad:
 
@@ -97,7 +97,7 @@ A number block laid out over two rows (5 keys each) instead of a classic numpad:
 
 ### Layer 3 — Symbols
 
-<p align="center"><img src="media/layer3-symbols.svg" width="640" alt="Symbols layer"></p>
+![Symbols layer](media/layer3-symbols.svg)
 
 Single-sided symbols layer (mostly on the right half):
 
@@ -108,7 +108,7 @@ Single-sided symbols layer (mostly on the right half):
 
 ### Layer 4 — Media
 
-<p align="center"><img src="media/layer4-media.svg" width="640" alt="Media layer"></p>
+![Media layer](media/layer4-media.svg)
 
 Media and display controls:
 
@@ -119,7 +119,7 @@ Media and display controls:
 
 ### Layer 5 — Functions
 
-<p align="center"><img src="media/layer5-functions.svg" width="640" alt="Functions layer"></p>
+![Functions layer](media/layer5-functions.svg)
 
 Functions keys in two 5-row blocks:
 
@@ -128,7 +128,7 @@ Functions keys in two 5-row blocks:
 
 ### Layer 6 — Buttons (Windows)
 
-<p align="center"><img src="media/layer6-buttons.svg" width="640" alt="Buttons layer"></p>
+![Buttons layer](media/layer6-buttons.svg)
 
 OS/app window and desktop shortcuts plus clipboard:
 
@@ -141,7 +141,7 @@ OS/app window and desktop shortcuts plus clipboard:
 
 ### Layer 7 — System
 
-<p align="center"><img src="media/layer7-system.svg" width="640" alt="System layer"></p>
+![System layer](media/layer7-system.svg)
 
 Keyboard-level controls:
 
