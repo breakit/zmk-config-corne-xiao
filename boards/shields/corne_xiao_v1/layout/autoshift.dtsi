@@ -1,0 +1,20 @@
+/*
+ * Autoshift behavior, extracted from the official ZMK documentation, tweaked to
+ * fit better. When using this behavior, you should not use it directly; use the
+ * macro function defined below it for a better syntax.
+ */
+/ {
+  behaviors {
+    as: auto_shift {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <2>;
+      tapping-term-ms = <200>;
+      quick-tap-ms = <200>;
+      flavor = "tap-preferred";
+      bindings = <&kp>, <&kp>;
+    };
+  };
+};
+
+// Helper macro to create an Autoshift version of a key.
+#define AS(keycode) &as LS(keycode) keycode     // Autoshift Macro

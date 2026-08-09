@@ -1,0 +1,19 @@
+/*
+ * Helper macros referencing keys that the standard layout uses symbolically so
+ * their output can be tuned per-keyboard or exchanged for Keymap-Drawer
+ * stand-ins. The Corne Xiao v1 port does not build with Keymap-Drawer, so only
+ * the "no-op" (firmware) values are produced here.
+ */
+
+// Locks the System layer in place (momentary-or-toggle).
+#define LOCK_SYS_LAYER &tog L_SYS
+
+// Undo key on the Buttons layer.
+#define UNDO_TOG_BUT_LAYER &kp MAC_UNDO
+
+// Command-keyed clipboard/editor shortcuts used on the Navigation layer.
+#define NAV_LG_Z &kp LG(Z)
+#define NAV_LG_X &kp LG(X)
+#define NAV_LG_C &kp LG(C)
+#define NAV_LG_V &kp LG(V)
+#define NAV_LG_G &kp LG(G)
