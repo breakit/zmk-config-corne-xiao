@@ -1,7 +1,7 @@
 build:
   # Root CMakeLists.txt is invoked so the custom status-screen widget source
   # is compiled into the app.
-  cmake: CMakeLists.txt
+  cmake: .
   settings:
     board_root: .
     dts_root: .
