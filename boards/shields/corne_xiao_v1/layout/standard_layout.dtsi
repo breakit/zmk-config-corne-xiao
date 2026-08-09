@@ -202,7 +202,7 @@
         &none,        &kp LBKT, &kp STAR, &kp FSLH,  &kp RBKT,    &kp CARET,                          &none, &none,      &none,     &none,     &none,     &none,
         &kp TAB,      &kp N1,   &kp N2,   &kp N3,    &kp N4,      &kp N5,     &kp LHYP,    &kp RHYP,  &none, &none,      &none,     &none,     &none,     &none,
         &kp KP_ENTER, &kp N6,   &kp N7,   &kp N8,    &kp N9,      &kp N0,     &kp LMEH,    &kp RMEH,  &none, &kp RHRM1,  &kp RHRM2, &kp RHRM3, &kp RHRM4, &none,
-        &kp EQUAL,    &kp LPAR, &kp PLUS, &kp MINUS, &kp RPAR,    &kp KP_DOT, &kp HOME,    &kp PG_UP, &none, &none,      &none,     &none,     &none,     &kp GLOBE,
+        &kp EQUAL,    &kp LPAR, &kp PLUS, &kp MINUS, &kp RPAR,    &kp KP_DOT, &kp HOME,    &kp PG_UP, &none, &none,      &none,     &none,     &none,     &none,
                       &tog L_NUM, &none,  &kp COMMA, &kp_bspcdel, &kp SPACE,  &kp END,     &kp PG_DN, &none, &tog L_NUM, &none,     &none,     &none
       )>;
     };
@@ -214,7 +214,7 @@
         &none,     &none,     &none,     &none,     &none,     &none,                              &kp QMARK, &kp PLUS,  &kp MINUS, &kp DOT,  &kp FSLH,  &kp BSLH,
         &none,     &none,     &none,     &none,     &none,     &none,      &kp LHYP,    &kp RHYP,  &kp AMPS,  &kp LT,    &kp EQUAL, &kp GT,   &kp PIPE,  &kp HASH,
         &none,     &kp LHRM4, &kp LHRM3, &kp LHRM2, &kp LHRM1, &none,      &kp LMEH,    &kp RMEH,  &kp LBKT,  &kp LPAR,  &kp COLON, &kp RPAR, &kp RBKT,  &kp PRCNT,
-        &kp GLOBE, &none,     &none,     &none,     &none,     &none,      &kp HOME,    &kp PG_UP, &kp DLLR,  &kp LBRC,  &kp STAR,  &kp RBRC, &kp CARET, &kp EXCL,
+        &none,     &none,     &none,     &none,     &none,     &none,      &kp HOME,    &kp PG_UP, &kp DLLR,  &kp LBRC,  &kp STAR,  &kp RBRC, &kp CARET, &kp EXCL,
                    &none,     &none,     &none,     &none,     &tog L_SYM, &kp END,     &kp PG_DN, &kp AT,    &kp SPACE, &none,     &none,    &tog L_SYM
       )>;
     };
@@ -226,7 +226,7 @@
         &none,        &none,        &none,      &none,    &none,      &none,                              &none,      &none,     &none,     &none,     &none,     &none,
         &kp C_VOL_UP, &kp C_BRI_UP, &none,      &none,    &none,      &none,      &kp LHYP,    &kp RHYP,  &none,      &none,     &none,     &none,     &none,     &none,
         &kp C_VOL_DN, &kp C_BRI_DN, &kp C_PREV, &kp C_PP, &kp C_NEXT, &none,      &kp LMEH,    &kp RMEH,  &none,      &kp RHRM1, &kp RHRM2, &kp RHRM3, &kp RHRM4, &none,
-        &kp C_MUTE,   &none,        &none,      &none,    &none,      &none,      &kp HOME,    &kp PG_UP, &none,      &none,     &none,     &none,     &none,     &kp GLOBE,
+        &kp C_MUTE,   &none,        &none,      &none,    &none,      &none,      &kp HOME,    &kp PG_UP, &none,      &none,     &none,     &none,     &none,     &none,
                       &tog L_MED,   &none,      &none,    &none,      &kp C_STOP, &kp END,     &kp PG_DN, &tog L_MED, &none,     &none,     &none,     &none
       )>;
     };
@@ -238,7 +238,7 @@
         &none, &kp F16, &kp F17, &kp F18, &kp F19, &kp F20,                         &none, &none,     &none,     &none,     &none,     &none,
         &none, &kp F11, &kp F12, &kp F13, &kp F14, &kp F15, &kp LHYP,    &kp RHYP,  &none, &none,     &none,     &none,     &none,     &none,
         &none, &kp F6,  &kp F7,  &kp F8,  &kp F9,  &kp F10, &kp LMEH,    &kp RMEH,  &none, &kp RHRM1, &kp RHRM2, &kp RHRM3, &kp RHRM4, &none,
-        &none, &kp F1,  &kp F2,  &kp F3,  &kp F4,  &kp F5,  &kp HOME,    &kp PG_UP, &none, &none,     &none,     P_RB3_FUN, P_RB4_FUN, &kp GLOBE,
+        &none, &kp F1,  &kp F2,  &kp F3,  &kp F4,  &kp F5,  &kp HOME,    &kp PG_UP, &none, &none,     &none,     P_RB3_FUN, P_RB4_FUN, &none,
                &tog L_FUN, &none, &none,  &none,   &none,   &kp END,     &kp PG_DN, &none, &none,     P_RF3_FUN, &none,     &none
       )>;
     };
