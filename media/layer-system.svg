@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1392" height="474" viewBox="0 0 1392 474">
+<rect width="1392" height="474" fill="#ffffff"/>
+<text x="696.0" y="20" font-family="DejaVu Sans, Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#20202b">Corne Xiao v1 - Layer 8: System</text>
+<rect x="24" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="732" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="130" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="838" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="236" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="944" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="342" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="1050" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="448" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="1156" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="554" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="1262" y="40" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="24" y="136" width="96" height="88" rx="10" fill="#ffd6cf" stroke="#3c3c46" stroke-width="2"/>
+<text x="72.0" y="173.0" font-family="DejaVu Sans, Arial" font-size="13" text-anchor="middle" fill="#20202b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">BOOT</text>
+<text x="72.0" y="195.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="middle" fill="#7c7c8b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">left</text>
+<rect x="732" y="136" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="130" y="136" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="838" y="136" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="236" y="136" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="944" y="136" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="342" y="136" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="1050" y="136" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="448" y="136" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="1156" y="136" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="554" y="136" width="96" height="88" rx="10" fill="#e4d9ff" stroke="#3c3c46" stroke-width="2"/>
+<text x="602.0" y="173.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="middle" fill="#20202b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">PWR</text>
+<text x="602.0" y="195.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="middle" fill="#7c7c8b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">toggle</text>
+<rect x="1262" y="136" width="96" height="88" rx="10" fill="#ffd6cf" stroke="#3c3c46" stroke-width="2"/>
+<text x="1310.0" y="173.0" font-family="DejaVu Sans, Arial" font-size="13" text-anchor="middle" fill="#20202b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">BOOT</text>
+<text x="1310.0" y="195.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="middle" fill="#7c7c8b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">right</text>
+<rect x="24" y="232" width="96" height="88" rx="10" fill="#ffd6cf" stroke="#3c3c46" stroke-width="2"/>
+<text x="72.0" y="280.0" font-family="DejaVu Sans, Arial" font-size="13" text-anchor="middle" fill="#20202b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">RESET</text>
+<rect x="732" y="232" width="96" height="88" rx="10" fill="#e4d9ff" stroke="#3c3c46" stroke-width="2"/>
+<text x="780.0" y="280.0" font-family="DejaVu Sans, Arial" font-size="13" text-anchor="middle" fill="#20202b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">USB/BLE</text>
+<rect x="130" y="232" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="838" y="232" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="236" y="232" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="944" y="232" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="342" y="232" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="1050" y="232" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="448" y="232" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="1156" y="232" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="554" y="232" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="1262" y="232" width="96" height="88" rx="10" fill="#ffd6cf" stroke="#3c3c46" stroke-width="2"/>
+<text x="1310.0" y="280.0" font-family="DejaVu Sans, Arial" font-size="13" text-anchor="middle" fill="#20202b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">RESET</text>
+<rect x="130" y="362" width="96" height="88" rx="10" fill="#d0e6ff" stroke="#3c3c46" stroke-width="2"/>
+<text x="178.0" y="399.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="middle" fill="#20202b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">SYS</text>
+<text x="178.0" y="421.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="middle" fill="#7c7c8b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">toggle</text>
+<rect x="732" y="362" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="236" y="362" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="838" y="362" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="342" y="362" width="96" height="88" rx="10" fill="#ededef" stroke="#3c3c46" stroke-width="2"/>
+<rect x="944" y="362" width="96" height="88" rx="10" fill="#d0e6ff" stroke="#3c3c46" stroke-width="2"/>
+<text x="992.0" y="399.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="middle" fill="#20202b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">SYS</text>
+<text x="992.0" y="421.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="middle" fill="#7c7c8b" paint-order="stroke" stroke="#ffffff" stroke-width="2" stroke-linejoin="round">toggle</text>
+</svg>
