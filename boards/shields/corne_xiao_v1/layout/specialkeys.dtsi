@@ -32,39 +32,41 @@
 #define BACK_TAB               LS(TAB)
 #define BTAB                   BACK_TAB
 
-// macOS Keys and common shortcuts
-#define MAC_LAUNCHPAD          C_AC_DESKTOP_SHOW_ALL_APPLICATIONS
+// Windows keys and common shortcuts.
+// These were originally macOS (Cmd/Launchpad/Mission Control/Spotlight) and
+// are retargeted to Windows equivalents for the Buttome layer.
+#define MAC_LAUNCHPAD          LG(E)             // Win+E: File Explorer
 #define MAC_LP                 MAC_LAUNCHPAD
-#define MAC_MISSION_CONTROL    C_AC_DESKTOP_SHOW_ALL_WINDOWS
+#define MAC_MISSION_CONTROL    LG(TAB)           // Win+Tab: Task View (all windows)
 #define MAC_MC                 MAC_MISSION_CONTROL
-#define MAC_SPOTLIGHT          C_AC_SEARCH
+#define MAC_SPOTLIGHT          LG(S)             // Win+S: Search
 #define MAC_SP                 MAC_SPOTLIGHT
-#define MAC_CUT                LG(X)
-#define MAC_COPY               LG(C)
-#define MAC_PASTE              LG(V)
-#define MAC_UNDO               LG(Z)
-#define MAC_REDO               LG(LS(Z))
-#define MAC_APP_WINDOWS        LG(LC(DOWN))   // Show windows from current application
+#define MAC_CUT                LC(X)
+#define MAC_COPY               LC(C)
+#define MAC_PASTE              LC(V)
+#define MAC_UNDO               LC(Z)
+#define MAC_REDO               LC(Y)             // Ctrl+Y: Redo
+#define MAC_APP_WINDOWS        LC(TAB)           // Ctrl+Tab: cycle windows in current app
 #define MAC_APPWIN             MAC_APP_WINDOWS
-#define MAC_NEXT_WINDOW        LG(GRAVE)      // Go to the next window on the same application
+#define MAC_NEXT_WINDOW        LC(F6)            // Ctrl+F6: next window in current app
 #define MAC_WINN               MAC_NEXT_WINDOW
-#define MAC_PREVIOUS_WINDOW    LG(TILDE)      // Go to the previous window on the same application
+#define MAC_PREVIOUS_WINDOW    LC(LS(F6))        // Ctrl+Shift+F6: previous window
 #define MAC_WINP               MAC_PREVIOUS_WINDOW
-#define MAC_NEXT_DESKTOP       LG(LC(RIGHT))  // Go to the next virtual desktop
+#define MAC_NEXT_DESKTOP       LC(LG(RIGHT))     // Ctrl+Win+Right: next virtual desktop
 #define MAC_DKTN               MAC_NEXT_DESKTOP
-#define MAC_PREVIOUS_DESKTOP   LG(LC(LEFT))   // Go to the previous virtual desktop
+#define MAC_PREVIOUS_DESKTOP   LC(LG(LEFT))      // Ctrl+Win+Left: previous virtual desktop
 #define MAC_DKTP               MAC_PREVIOUS_DESKTOP
-#define MAC_FIND_NEXT          LG(G)
+#define MAC_FIND_NEXT          LC(G)
 #define MAC_FDNXT              MAC_FIND_NEXT
-#define MAC_FIND_PREVIOUS      LG(LS(G))
+#define MAC_FIND_PREVIOUS      LC(LS(G))
 #define MAC_FDPRV              MAC_FIND_PREVIOUS
-#define MAC_NEXT_WORD          LA(RIGHT)
+#define MAC_NEXT_WORD          LC(RIGHT)
 #define MAC_WRDN               MAC_NEXT_WORD
-#define MAC_PREVIOUS_WORD      LA(LEFT)
+#define MAC_PREVIOUS_WORD      LC(LEFT)
 #define MAC_WRDP               MAC_PREVIOUS_WORD
-#define MAC_START_OF_LINE      LG(LEFT)
+#define MAC_START_OF_LINE      HOME
 #define MAC_STTL               MAC_START_OF_LINE
-#define MAC_END_OF_LINE        LG(RIGHT)
+#define MAC_END_OF_LINE        END
 #define MAC_ENDL               MAC_END_OF_LINE
 
 // This helper macro allows one to define a normal key with a special output when
