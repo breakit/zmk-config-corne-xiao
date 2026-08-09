@@ -215,7 +215,7 @@
         &none,     &none,     &none,     &none,     &none,     &none,      &kp LHYP,    &kp RHYP,  &kp AMPS,  &kp LT,    &kp EQUAL, &kp GT,   &kp PIPE,  &kp HASH,
         &none,     &kp LHRM4, &kp LHRM3, &kp LHRM2, &kp LHRM1, &none,      &kp LMEH,    &kp RMEH,  &kp LBKT,  &kp LPAR,  &kp COLON, &kp RPAR, &kp RBKT,  &kp PRCNT,
         &none,     &none,     &none,     &none,     &none,     &none,      &kp HOME,    &kp PG_UP, &kp DLLR,  &kp LBRC,  &kp STAR,  &kp RBRC, &kp CARET, &kp EXCL,
-                   &none,     &none,     &none,     &none,     &tog L_SYM, &kp END,     &kp PG_DN, &kp AT,    &kp SPACE, &none,     &none,    &tog L_SYM
+                   &kp TILDE, &none,     &none,     &none,     &tog L_SYM, &kp END,     &kp PG_DN, &kp AT,    &kp SPACE, &none,     &none,    &tog L_SYM
       )>;
     };
 
