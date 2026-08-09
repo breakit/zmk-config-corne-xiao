@@ -56,6 +56,8 @@ There are **8 layers**. Placeholders/layer activation keys are marked in the SVG
 
 ### Layer 0 — QWERTY (base)
 
+<p align="center"><img src="media/layer0-main.svg" width="640" alt="QWERTY layer"></p>
+
 The default layer.
 
 - **Top row:** `Tab  Q  W  E  R  T` / `Y  U  I  O  P  -`
@@ -69,6 +71,8 @@ The default layer.
 
 ### Layer 1 — Navigation (Windows)
 
+<p align="center"><img src="media/layer1-navigation.svg" width="640" alt="Navigation layer"></p>
+
 Cursor and window-management shortcuts.
 
 - Arrow keys live on the right-hand home cluster; `Home`/`End`/`PageUp`/`PageDown` nearby.
@@ -81,6 +85,8 @@ Cursor and window-management shortcuts.
 
 ### Layer 2 — Numbers
 
+<p align="center"><img src="media/layer2-numbers.svg" width="640" alt="Numbers layer"></p>
+
 A number block laid out over two rows (5 keys each) instead of a classic numpad:
 
 - **Rows:** `1 2 3 4 5` on the top, `6 7 8 9 0` beneath (with `Tab`, `Enter`, and `=` anchors).
@@ -91,6 +97,8 @@ A number block laid out over two rows (5 keys each) instead of a classic numpad:
 
 ### Layer 3 — Symbols
 
+<p align="center"><img src="media/layer3-symbols.svg" width="640" alt="Symbols layer"></p>
+
 Single-sided symbols layer (mostly on the right half):
 
 - **Right side:** `? + - . / \` / `& < = > | #` / `[ ( : ) ] %` / `$ { * } ^ !`
@@ -99,6 +107,8 @@ Single-sided symbols layer (mostly on the right half):
 - Left home-row keys act as modifiers when held.
 
 ### Layer 4 — Media
+
+<p align="center"><img src="media/layer4-media.svg" width="640" alt="Media layer"></p>
 
 Media and display controls:
 
@@ -109,12 +119,16 @@ Media and display controls:
 
 ### Layer 5 — Functions
 
+<p align="center"><img src="media/layer5-functions.svg" width="640" alt="Functions layer"></p>
+
 Functions keys in two 5-row blocks:
 
 - **Top:** `F11`–`F15`; **above/below** `F6`–`F10` and `F1`–`F5`; `F16`–`F20` on the far column.
 - `Functions` toggle on the left thumb.
 
 ### Layer 6 — Buttons (Windows)
+
+<p align="center"><img src="media/layer6-buttons.svg" width="640" alt="Buttons layer"></p>
 
 OS/app window and desktop shortcuts plus clipboard:
 
@@ -126,6 +140,8 @@ OS/app window and desktop shortcuts plus clipboard:
 - `Buttons` toggle on the thumbs.
 
 ### Layer 7 — System
+
+<p align="center"><img src="media/layer7-system.svg" width="640" alt="System layer"></p>
 
 Keyboard-level controls:
 
