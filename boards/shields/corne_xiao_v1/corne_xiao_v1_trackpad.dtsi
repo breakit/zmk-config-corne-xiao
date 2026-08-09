@@ -1,0 +1,34 @@
+/*
+ * Cirque GlidePoint (Pinnacle) trackpad wiring for the Corne Xiao v1.
+ *
+ * This file is included from both the left (central) and right (peripheral)
+ * halves and is only active when CONFIG_CORNE_XIAO_RIGHT_TRACKPAD=y, which is
+ * OFF by default so the right-hand OLED keeps working until the trackpad is
+ * installed.
+ *
+ * Node layout follows ZMK's split-pointing docs: an `input-split` device on
+ * every part, a disabled `input-listener` on the central, the concrete
+ * `cirque,pinnacle` device on the peripheral (right) half.
+ */
+
+#if defined(CONFIG_CORNE_XIAO_RIGHT_TRACKPAD)
+
+/ {
+    split_inputs {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        glidepoint_split: glidepoint_split@0 {
+            compatible = "zmk,input-split";
+            reg = <0>;
+        };
+    };
+
+    glidepoint_listener: glidepoint_listener {
+        compatible = "zmk,input-listener";
+        status = "disabled";
+        device = <&glidepoint_split>;
+    };
+};
+
+#endif /* CONFIG_CORNE_XIAO_RIGHT_TRACKPAD */

@@ -1,4 +1,5 @@
 #include "corne_xiao_v1.dtsi"
+#include "corne_xiao_v1_trackpad.dtsi"
 
 &kscan0 {
     col-gpios
@@ -10,3 +11,9 @@
         , <&gpio0 10 GPIO_ACTIVE_HIGH>
         ;
 };
+
+#if defined(CONFIG_CORNE_XIAO_RIGHT_TRACKPAD)
+&glidepoint_listener {
+    status = "okay";
+};
+#endif

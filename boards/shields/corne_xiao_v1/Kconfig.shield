@@ -3,3 +3,12 @@ config SHIELD_CORNE_XIAO_V1_LEFT
 
 config SHIELD_CORNE_XIAO_V1_RIGHT
     def_bool $(shields_list_contains,corne_xiao_v1_right)
+
+config CORNE_XIAO_RIGHT_TRACKPAD
+    bool "Enable Cirque GlidePoint trackpad on the right half"
+    depends on SHIELD_CORNE_XIAO_V1_RIGHT
+    depends on !ZMK_DISPLAY
+    help
+      Install the Cirque GlidePoint (Pinnacle) trackpad on the right half in
+      place of the OLED. Requires the trackpad to be wired to the right-half
+      xiao_i2c bus. When off (default), the right-half OLED keeps working.

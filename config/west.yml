@@ -4,8 +4,10 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: caksoylar
       url-base: https://github.com/caksoylar
-    - name: urob
-      url-base: https://github.com/urob
+    - name: dhruvinsh
+      url-base: https://github.com/dhruvinsh
+    - name: juniorz
+      url-base: https://github.com/juniorz
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -14,21 +16,16 @@ manifest:
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main
-    - name: zmk-helpers
-      remote: urob
-      revision: 0b9e9d1dd9e86f70b4c8c2b0fab55c4f90c9d2e3
-      path: modules/zmk/helpers
-    - name: zmk-adaptive-key
-      remote: urob
-      revision: 18cc2795a64ccb394d1a7b7d591a5bfe3f25924b
-      path: modules/zmk/adaptive-key
-    - name: zmk-auto-layer
-      remote: urob
-      revision: dfa7c695ffde41ef8064245453595d50e198ae1d
-      path: modules/zmk/auto-layer
-    - name: zmk-unicode
-      remote: urob
-      revision: 1a6dbc797a46c4a61c3c71a7a9d013a5d5aee49e
-      path: modules/zmk/unicode
+    - name: zmk-tri-state
+      remote: dhruvinsh
+      revision: main
+      path: modules/zmk-tri-state
+    # Cirque Pinnacle (GlidePoint) trackpad driver. Disabled in firmware until
+    # the trackpad is installed; the west module is only pulled for build-time
+    # availability of the cirque,pinnacle binding/driver.
+    - name: zmk-keyboard-cirque-pinnacle
+      remote: juniorz
+      revision: main
+      path: modules/zmk-cirque-pinnacle
   self:
     path: config

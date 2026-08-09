@@ -1,0 +1,270 @@
+/*
+ * Shared Corne Xiao v1 layout, adapted from Townk's ZMK configuration
+ * (https://github.com/Townk/zmk-config).
+ *
+ * Changes made for this port:
+ *   - Runs on stock ZMK (no `molock`, pointer-mouse, backlight, or underglow
+ *     fork features).
+ *   - COLEMAK and MOUSE layers removed.
+ *   - `&molock` replaced with the stock `&tog` layer toggle.
+ *   - Backlight/RGB underglow keys removed (the Corne Xiao v1 has no such
+ *     hardware).
+ *   - `sensor-bindings` removed (no rotary encoders on the v1).
+ *
+ * Layer numbers:
+ *   L_QWT 0    QWERTY
+ *   L_NAV 1    Navigation
+ *   L_NUM 2    Numbers
+ *   L_SYM 3    Symbols
+ *   L_MED 4    Media
+ *   L_FUN 5    Functions
+ *   L_BUT 6    Buttons
+ *   L_SYS 7    System
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/backlight.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/outputs.h>
+
+#include "specialkeys.dtsi"
+#include "homerowmods.dtsi"
+#include "autoshift.dtsi"
+#include "keymap_drawer.dtsi"
+
+// Layers definitions
+// -----------------------------------------------------------------------------
+// The next define macros represent each layer my layout has, so I can reference
+// them by name instead of numbers.
+
+// Main layout: QWERTY
+#define L_QWT 0
+// Navigation layer
+#define L_NAV 1
+// Numbers layer
+#define L_NUM 2
+// Symbols layer
+#define L_SYM 3
+// Media layer
+#define L_MED 4
+// Functions layer
+#define L_FUN 5
+// Buttons layer
+#define L_BUT 6
+// System layer
+#define L_SYS 7
+
+// Behavior configuration
+// -----------------------------------------------------------------------------
+// A few extra keys allowed in the CAPS_WORD streak, like backspace, so fixing
+// a typo doesn't knock the keyboard out of CAPS_WORD mode.
+&caps_word {
+  continue-list = <UNDERSCORE MINUS BSPC>;
+};
+
+// Definition of macros representing all alternative positions for the
+// activation of the "Buttons" layer. The Corne Xiao v1 port always uses the
+// hold-tap activation keys on the edge of the core cluster, so only that
+// variant is kept.
+#define P_LB4_QWT  &hll L_BUT Z
+#define P_RB4_QWT  &hlr L_BUT FSLH
+#define P_SF4_QWT  &none
+#define P_SF4_BUT  &none
+#define P_SB4_BUT  UNDO_TOG_BUT_LAYER
+
+// Definition of macros representing all alternative positions for the
+// activation of the "Functions" layer. The Corne Xiao v1 port always uses
+// hold-tap for both "Buttons" and "Functions", so only that variant is kept.
+#define P_RB3_QWT  &hlr L_FUN DOT
+#define P_RF3_QWT  &none
+#define P_RF3_FUN  &none
+#define P_RB3_FUN  &tog L_FUN
+#define P_RB4_FUN  &none
+
+// The MOUSE layer is not part of this Corne Xiao v1 port, so the left-hand
+// positions that would have activated it are fixed to plain keys.
+#define P_LB3_QWT  &kp X
+#define P_LF3_QWT  &none
+
+// Special behaviors
+// -----------------------------------------------------------------------------
+/ {
+  behaviors {
+    // Tap: Backspace
+    // Shift-tap: -
+    // Double-tap: -
+    // Hold: Navigation Layer
+    // Morph: with Shift => Forward delete
+    bspcnav: backspace_or_del_and_layer_nav {
+      compatible = "zmk,behavior-mod-morph";
+      #binding-cells = <0>;
+      bindings = <&hll L_NAV BSPC>, <&kp DEL>;
+      mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+
+    // Tap: -
+    // Shift-tap: -
+    // Double-tap: Toggle System Layer
+    // Hold: Activate System Layer
+    motg_sys: momentary_or_toggle_layer_sys {
+      compatible = "zmk,behavior-tap-dance";
+      #binding-cells = <0>;
+      tapping-term-ms = <200>;
+      bindings = <&mo L_SYS>, <&tog L_SYS>;
+    };
+
+    // Windows: Alt+Tab to switch to the next application (hold Alt, tap Tab).
+    appswtnxt: application_switch_next {
+      compatible = "zmk,behavior-tri-state";
+      #binding-cells = <0>;
+      bindings = <&kt LALT>, <&kp TAB>, <&kt LALT>;
+      ignored-key-positions = <LT5 LM5>;
+    };
+
+    // Windows: Alt+Shift+Tab to switch to the previous application.
+    appPwinN: application_switch_previous_window_next {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings
+        = <&macro_press &kp LALT>
+        , <&macro_press &kp LSHFT>
+        , <&macro_tap &kp TAB>
+        , <&macro_release &kp LSHFT>
+        , <&macro_release &kp LALT>;
+    };
+
+    // Windows: Alt+Shift+Esc to switch to the previous window.
+    winPglobe: window_previous_globe {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings
+        = <&macro_press &kp LALT>
+        , <&macro_press &kp LSHFT>
+        , <&macro_tap &kp ESC>
+        , <&macro_release &kp LSHFT>
+        , <&macro_release &kp LALT>;
+    };
+  };
+};
+
+// Combo keys
+// -----------------------------------------------------------------------------
+/ {
+    combos {
+        compatible = "zmk,combos";
+
+        // Turn on CAPS_WORD when pressing both shift keys together.
+        combo_caps_word {
+            timeout-ms = <75>;
+            key-positions = COMBO_KEY_CAPS_WORD;
+            layers = <L_QWT>;
+            bindings = <&caps_word>;
+        };
+    };
+};
+
+// Keyboard Layout definition
+// -----------------------------------------------------------------------------
+/ {
+  keymap {
+    compatible = "zmk,keymap";
+
+    // Layer: MAIN (QWERTY)
+    MAIN {
+      display-name = "QWERTY";
+      bindings = <LAYER_ADAPTER(
+        &kp LBKT, &kp_rN1,     &kp_rN2,   &kp_rN3,   &kp_rN4,   &kp_rN5,                              &kp_rN6,       &kp_rN7,   &kp_rN8,   &kp_rN9,   &kp_rN0,   &kp RBKT,
+        &kp TAB,    &kp Q,     &kp W,     &kp E,     &kp R,     &kp T,        &kp LHYP,    &kp RHYP,  &kp Y,         &kp U,     &kp I,     &kp O,     &kp P,     &kp MINUS,
+        &kp GRAVE,  LHM4(A),   LHM3(S),   LHM2(D),   LHM1(F),   &kp G,        &kp LMEH,    &kp RMEH,  &kp H,         RHM1(J),   RHM2(K),   RHM3(L),   RHM4(SEMI), &kp SQT,
+        &kp BSLH, P_LB4_QWT, P_LB3_QWT, &kp C,     AS(V),     &kp B,        &kp HOME,    &kp PG_UP, &kp N,         &kp M,     &kp COMMA, P_RB3_QWT, P_RB4_QWT, &kp EQUAL,
+                    &motg_sys, P_SF4_QWT, P_LF3_QWT, &bspcnav,  &lt L_SYM ESC, &kp END,    &kp PG_DN, &lt L_MED RET, &hlr L_NUM SPACE,    P_RF3_QWT, P_SF4_QWT, &motg_sys
+      )>;
+    };
+
+    // Layer: NAVIGATION (Windows shortcuts)
+    NAV {
+      display-name = "Navigation";
+      bindings = <LAYER_ADAPTER(
+        &appPwinN,  &kp LC(N1),  &kp LC(N2),  &kp LC(N3),  &kp LC(N4),  &kp LC(N5),                         &none, &kp BTAB,       &kp LC(LS(G)), &kp LC(G),      &kp TAB,      &none,
+        &appswtnxt, &kp LC(Q),   &kp LC(W),   &kp LC(E),   &kp LC(R),   &kp LC(T),   &kp LHYP,    &kp RHYP,  &none, &kp HOME,       &kp PG_DN,     &kp PG_UP,     &kp END,      &none,
+        &appPwinN,  LMT4(LC(A)), LMT3(LC(S)), LMT2(LC(D)), LMT1(LC(F)), NAV_LG_G,    &kp LMEH,    &kp RMEH,  &none, &kp LEFT,       &kp DOWN,      &kp UP,        &kp RIGHT,    &none,
+        &winPglobe, NAV_LG_Z,    NAV_LG_X,    NAV_LG_C,    NAV_LG_V,    &kp LC(B),   &kp HOME,    &kp PG_UP, &none, &kp LC(LEFT),  &kp HOME,      &kp END,       &kp LC(RIGHT), &none,
+                    &none,       &none,       &none,       &tog L_NAV,  &none,      &kp END,     &kp PG_DN, &none, &none,        &none,         &none,         &tog L_NAV
+      )>;
+    };
+
+    // Layer: NUMBERS
+    NUM {
+      display-name = "Numbers";
+      bindings = <LAYER_ADAPTER(
+        &none,        &kp LBKT, &kp STAR, &kp FSLH,  &kp RBKT,    &kp CARET,                          &none, &none,      &none,     &none,     &none,     &none,
+        &kp TAB,      &kp N1,   &kp N2,   &kp N3,    &kp N4,      &kp N5,     &kp LHYP,    &kp RHYP,  &none, &none,      &none,     &none,     &none,     &none,
+        &kp KP_ENTER, &kp N6,   &kp N7,   &kp N8,    &kp N9,      &kp N0,     &kp LMEH,    &kp RMEH,  &none, &kp RHRM1,  &kp RHRM2, &kp RHRM3, &kp RHRM4, &none,
+        &kp EQUAL,    &kp LPAR, &kp PLUS, &kp MINUS, &kp RPAR,    &kp KP_DOT, &kp HOME,    &kp PG_UP, &none, &none,      &none,     &none,     &none,     &none,
+                      &tog L_NUM, &none,  &kp COMMA, &kp_bspcdel, &kp SPACE,  &kp END,     &kp PG_DN, &none, &tog L_NUM, &none,     &none,     &none
+      )>;
+    };
+
+    // Layer: SYMBOLS
+    SYMBOL {
+      display-name = "Symbols";
+      bindings = <LAYER_ADAPTER(
+        &none,     &none,     &none,     &none,     &none,     &none,                              &kp QMARK, &kp PLUS,  &kp MINUS, &kp DOT,  &kp FSLH,  &kp BSLH,
+        &none,     &none,     &none,     &none,     &none,     &none,      &kp LHYP,    &kp RHYP,  &kp AMPS,  &kp LT,    &kp EQUAL, &kp GT,   &kp PIPE,  &kp HASH,
+        &none,     &kp LHRM4, &kp LHRM3, &kp LHRM2, &kp LHRM1, &none,      &kp LMEH,    &kp RMEH,  &kp LBKT,  &kp LPAR,  &kp COLON, &kp RPAR, &kp RBKT,  &kp PRCNT,
+        &none,     &none,     &none,     &none,     &none,     &none,      &kp HOME,    &kp PG_UP, &kp DLLR,  &kp LBRC,  &kp STAR,  &kp RBRC, &kp CARET, &kp EXCL,
+                   &kp TILDE, &none,     &none,     &none,     &tog L_SYM, &kp END,     &kp PG_DN, &kp AT,    &kp SPACE, &none,     &none,    &tog L_SYM
+      )>;
+    };
+
+    // Layer: MEDIA
+    MEDIA {
+      display-name = "Media";
+      bindings = <LAYER_ADAPTER(
+        &none,        &none,        &none,      &none,    &none,      &none,                              &none,      &none,     &none,     &none,     &none,     &none,
+        &kp C_VOL_UP, &kp C_BRI_UP, &none,      &none,    &none,      &none,      &kp LHYP,    &kp RHYP,  &none,      &none,     &none,     &none,     &none,     &none,
+        &kp C_VOL_DN, &kp C_BRI_DN, &kp C_PREV, &kp C_PP, &kp C_NEXT, &none,      &kp LMEH,    &kp RMEH,  &none,      &kp RHRM1, &kp RHRM2, &kp RHRM3, &kp RHRM4, &none,
+        &kp C_MUTE,   &none,        &none,      &none,    &none,      &none,      &kp HOME,    &kp PG_UP, &none,      &none,     &none,     &none,     &none,     &none,
+                      &tog L_MED,   &none,      &none,    &none,      &kp C_STOP, &kp END,     &kp PG_DN, &tog L_MED, &none,     &none,     &none,     &none
+      )>;
+    };
+
+    // Layer: FUNCTIONS
+    FUNCTIONS {
+      display-name = "Functions";
+      bindings = <LAYER_ADAPTER(
+        &none, &kp F16, &kp F17, &kp F18, &kp F19, &kp F20,                         &none, &none,     &none,     &none,     &none,     &none,
+        &none, &kp F11, &kp F12, &kp F13, &kp F14, &kp F15, &kp LHYP,    &kp RHYP,  &none, &none,     &none,     &none,     &none,     &none,
+        &none, &kp F6,  &kp F7,  &kp F8,  &kp F9,  &kp F10, &kp LMEH,    &kp RMEH,  &none, &kp RHRM1, &kp RHRM2, &kp RHRM3, &kp RHRM4, &none,
+        &none, &kp F1,  &kp F2,  &kp F3,  &kp F4,  &kp F5,  &kp HOME,    &kp PG_UP, &none, &none,     &none,     P_RB3_FUN, P_RB4_FUN, &none,
+               &tog L_FUN, &none, &none,  &none,   &none,   &kp END,     &kp PG_DN, &none, &none,     P_RF3_FUN, &none,     &none
+      )>;
+    };
+
+    // Layer: BUTTONS
+    BUTTON {
+      display-name = "Buttons";
+      bindings = <LAYER_ADAPTER(
+        &none,              &kp BTAB,     &kp MAC_FDPRV, &kp MAC_FDNXT, &kp TAB,       &kp MAC_LP,                             &kp MAC_LP,     &kp BTAB,      &kp MAC_FDPRV, &kp MAC_FDNXT, &kp TAB,      &none,
+        &none,              &kp MAC_DKTP, &kp MAC_WINP,  &kp MAC_WINN,  &kp MAC_DKTN,  &kp MAC_APPWIN, &kp LHYP,    &kp RHYP,  &kp MAC_APPWIN, &kp MAC_DKTP,  &kp MAC_WINP,  &kp MAC_WINN,  &kp MAC_DKTN, &none,
+        &none,              &kp LHRM4,    &kp LHRM3,     &kp LHRM2,     &kp LHRM1,     &kp MAC_MC,     &kp LMEH,    &kp RMEH,  &kp MAC_MC,     &kp RHRM1,     &kp RHRM2,     &kp RHRM3,     &kp RHRM4,    &none,
+        &kp MAC_REDO, P_SB4_BUT,    &kp MAC_CUT,   &kp MAC_COPY,  &kp MAC_PASTE, &kp MAC_SP,     &kp HOME,    &kp PG_UP, &kp MAC_SP,     &kp MAC_PASTE, &kp MAC_COPY,  &kp MAC_CUT,   P_SB4_BUT,    &kp MAC_REDO,
+                            &tog L_BUT,   P_SF4_BUT,     &none,         &none,         &none,          &kp END,     &kp PG_DN, &none,          &none,         &none,         P_SF4_BUT,     &tog L_BUT
+      )>;
+    };
+
+    // Layer: SYSTEM
+    SYSTEM {
+      display-name = "System";
+      bindings = <LAYER_ADAPTER(
+        &none,       &none,       &none,       &none,       &none,   &none,                                     &none,        &none,        &none,        &none,        &none,         &none,
+        &bootloader, &none,       &none,       &none,       &none,   &ext_power EP_TOG, &kp LHYP,    &kp RHYP,  &none,        &none,        &none,        &none,        &none,         &bootloader,
+        &sys_reset,  &none,       &none,       &none,       &none,   &out OUT_TOG,      &kp LMEH,    &kp RMEH,  &none,        &none,        &none,        &none,        &none,         &sys_reset,
+        &none,       &none,       &none,       &none,       &none,   &kp C_PWR,         &kp HOME,    &kp PG_UP, &bt BT_SEL 0, &bt BT_SEL 1, &bt BT_SEL 2, &bt BT_SEL 3, &bt BT_SEL 4,  &bt BT_CLR,
+                     &tog L_SYS,  &none,       &none,       &none,   &none,            &kp END,     &kp PG_DN, &none,        &none,        &none,        &none,        &tog L_SYS
+      )>;
+    };
+  };
+};
