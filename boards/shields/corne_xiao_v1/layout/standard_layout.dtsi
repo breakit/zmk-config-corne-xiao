@@ -224,34 +224,44 @@
       bindings = <&kp SQT>, <&caps_word>;
     };
 
+    // Windows: Alt+Tab to switch to the next application (hold Alt, tap Tab).
     appswtnxt: application_switch_next {
       compatible = "zmk,behavior-tri-state";
       #binding-cells = <0>;
-      bindings = <&kt LGUI>, <&kp TAB>, <&kt LGUI>;
+      bindings = <&kt LALT>, <&kp TAB>, <&kt LALT>;
       ignored-key-positions = <LT5 LM5>;
     };
 
+    // Windows: Alt+Esc to switch to the next window without Alt-Tab dialog.
     winswtnxt: window_switch_next {
       compatible = "zmk,behavior-tri-state";
       #binding-cells = <0>;
-      bindings = <&kt LGUI>, <&kp GRAVE>, <&kt LGUI>;
+      bindings = <&kt LALT>, <&kp ESC>, <&kt LALT>;
       ignored-key-positions = <LB5 LM5>;
     };
 
+    // Windows: Alt+Shift+Tab to switch to the previous application.
     appPwinN: application_switch_previous_window_next {
-      compatible = "zmk,behavior-mod-morph";
+      compatible = "zmk,behavior-macro";
       #binding-cells = <0>;
-      bindings = <&winswtnxt>, <&kp GRAVE>;
-      mods = <(MOD_LGUI|MOD_RGUI)>;
-      keep-mods = <(MOD_LGUI|MOD_RGUI)>;
+      bindings
+        = <&macro_press &kp LALT>
+        , <&macro_press &kp LSHFT>
+        , <&macro_tap &kp TAB>
+        , <&macro_release &kp LSHFT>
+        , <&macro_release &kp LALT>;
     };
 
+    // Windows: Alt+Shift+Esc to switch to the previous window.
     winPglobe: window_previous_globe {
-      compatible = "zmk,behavior-mod-morph";
+      compatible = "zmk,behavior-macro";
       #binding-cells = <0>;
-      bindings = <&kp GLOBE>, <&kp TILDE>;
-      mods = <(MOD_LGUI|MOD_RGUI)>;
-      keep-mods = <(MOD_LGUI|MOD_RGUI)>;
+      bindings
+        = <&macro_press &kp LALT>
+        , <&macro_press &kp LSHFT>
+        , <&macro_tap &kp ESC>
+        , <&macro_release &kp LSHFT>
+        , <&macro_release &kp LALT>;
     };
   };
 };
@@ -290,14 +300,14 @@
       )>;
     };
 
-    // Layer: NAVIGATION
+    // Layer: NAVIGATION (Windows shortcuts)
     NAV {
       display-name = "Navigation";
       bindings = <LAYER_ADAPTER(
-        &appPwinN,  &kp LG(N1),  &kp LG(N2),  &kp LG(N3),  &kp LG(N4),  &kp LG(N5),                         &none, &kp BTAB,     &kp MAC_FDPRV, &kp MAC_FDNXT, &kp TAB,      &none,
-        &appswtnxt, &kp LG(Q),   &kp LG(W),   &kp LG(E),   &kp LG(R),   &kp LG(T),  &kp LHYP,    &kp RHYP,  &none, &kp HOME,     &kp PG_DN,     &kp PG_UP,     &kp END,      &none,
-        &appPwinN,  LMT4(LG(A)), LMT3(LG(S)), LMT2(LG(D)), LMT1(LG(F)), NAV_LG_G,   &kp LMEH,    &kp RMEH,  &none, &kp LEFT,     &kp DOWN,      &kp UP,        &kp RIGHT,    &none,
-        &winPglobe, NAV_LG_Z,    NAV_LG_X,    NAV_LG_C,    NAV_LG_V,    &kp LG(B),  &kp HOME,    &kp PG_UP, &none, &kp MAC_WRDP, &kp MAC_STTL,  &kp MAC_ENDL,  &kp MAC_WRDN, &none,
+        &appPwinN,  &kp LC(N1),  &kp LC(N2),  &kp LC(N3),  &kp LC(N4),  &kp LC(N5),                         &none, &kp BTAB,       &kp LC(LS(G)), &kp LC(G),      &kp TAB,      &none,
+        &appswtnxt, &kp LC(Q),   &kp LC(W),   &kp LC(E),   &kp LC(R),   &kp LC(T),   &kp LHYP,    &kp RHYP,  &none, &kp HOME,       &kp PG_DN,     &kp PG_UP,     &kp END,      &none,
+        &appPwinN,  LMT4(LC(A)), LMT3(LC(S)), LMT2(LC(D)), LMT1(LC(F)), NAV_LG_G,    &kp LMEH,    &kp RMEH,  &none, &kp LEFT,       &kp DOWN,      &kp UP,        &kp RIGHT,    &none,
+        &winPglobe, NAV_LG_Z,    NAV_LG_X,    NAV_LG_C,    NAV_LG_V,    &kp LC(B),   &kp HOME,    &kp PG_UP, &none, &kp LC(LEFT),  &kp HOME,      &kp END,       &kp LC(RIGHT), &none,
                     &none,       &none,       &none,       &tog L_NAV,  &none,      &kp END,     &kp PG_DN, &none, &none,        &none,         &none,         &tog L_NAV
       )>;
     };

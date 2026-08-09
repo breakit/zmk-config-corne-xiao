@@ -12,8 +12,10 @@
 #define UNDO_TOG_BUT_LAYER &kp MAC_UNDO
 
 // Command-keyed clipboard/editor shortcuts used on the Navigation layer.
-#define NAV_LG_Z &kp LG(Z)
-#define NAV_LG_X &kp LG(X)
-#define NAV_LG_C &kp LG(C)
-#define NAV_LG_V &kp LG(V)
-#define NAV_LG_G &kp LG(G)
+// These were originally macOS "Cmd+X/C/V/G/Z" and are retargeted to Windows
+// "Ctrl+X/C/V/G/Z".
+#define NAV_LG_Z &kp LC(Z)
+#define NAV_LG_X &kp LC(X)
+#define NAV_LG_C &kp LC(C)
+#define NAV_LG_V &kp LC(V)
+#define NAV_LG_G &kp LC(G)
