@@ -32,18 +32,6 @@
 //   row1: 12 13 14 15 16 17  | 18 19 20 21 22 23
 //   row2: 24 25 26 27 28 29  | 30 31 32 33 34 35
 //   thumbs:      36 37 38    |   39 40 41
-#define KEYS_L 0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29
-#define KEYS_R 6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35
-#define THUMBS 36 37 38 39 40 41
-
-ZMK_HOLD_TAP(hm_l, bindings = <&kp>, <&kp>; flavor = "balanced";
-             tapping-term-ms = <300>; quick-tap-ms = <200>;
-             hold-trigger-on-release;
-             hold-trigger-key-positions = <KEYS_R THUMBS>;)
-ZMK_HOLD_TAP(hm_r, bindings = <&kp>, <&kp>; flavor = "balanced";
-             tapping-term-ms = <300>; quick-tap-ms = <200>;
-             hold-trigger-on-release;
-             hold-trigger-key-positions = <KEYS_L THUMBS>;)
 
 / {
     keymap {
@@ -53,7 +41,7 @@ ZMK_HOLD_TAP(hm_r, bindings = <&kp>, <&kp>; flavor = "balanced";
             display-name = "QWERTY";
             bindings = <
    &kp TAB   &kp Q &kp W &kp E &kp R &kp T     &kp Y &kp U &kp I &kp O &kp P &kp MINUS
-   &kp GRAVE &hm_l LSHFT A &hm_l LCTRL S &hm_l LALT D &hm_l LGUI F &kp G   &kp H &hm_r RGUI J &hm_r RALT K &hm_r RCTRL L &hm_r RSHFT SEMI &kp SQT
+   &kp GRAVE &mt LSHFT A &mt LCTRL S &mt LALT D &mt LGUI F &kp G   &kp H &mt RGUI J &mt RALT K &mt RCTRL L &mt RSHFT SEMI &kp SQT
    &kp BSLH  &kp Z &kp X &kp C &kp V &kp B     &kp N &kp M &kp COMMA &kp DOT &kp FSLH &kp EQUAL
                         &mo L_SYS &mo L_SYM &mo L_NAV     &kp SPACE &mo L_NUM &mo L_MED
                         >;
@@ -74,8 +62,8 @@ ZMK_HOLD_TAP(hm_r, bindings = <&kp>, <&kp>; flavor = "balanced";
             bindings = <
    &none &kp LBKT &kp STAR &kp FSLH &kp RBKT &kp CARET      &none &none &none &none &none &none
    &kp TAB &kp N1 &kp N2 &kp N3 &kp N4 &kp N5     &none &none &none &none &none &none
-   &kp KP_ENTER &kp N6 &kp N7 &kp N8 &kp N9 &kp N0     &none &none &none &none &none &kp GLOBE
-              &none &none &tog L_NUM     &kp BSPC &kp SPACE &none
+   &kp KP_ENTER &kp N6 &kp N7 &kp N8 &kp N9 &kp N0     &kp BSPC &none &none &none &none &kp GLOBE
+              &none &none &tog L_NUM     &kp SPACE &none &none
                         >;
         };
 
