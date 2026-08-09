@@ -34,7 +34,4 @@
 
 #define COMBO_KEY_CAPS_WORD  <LM1 RM1>
 
-#define USE_HOLD_TAP_LAYER_BUTTONS
-#define USE_HOLD_TAP_LAYER_FUNCTIONS
-
 #include "layout/standard_layout.dtsi"

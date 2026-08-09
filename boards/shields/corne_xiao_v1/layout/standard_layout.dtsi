@@ -65,53 +65,23 @@
 };
 
 // Definition of macros representing all alternative positions for the
-// activation of the "Buttons" layer.
-#if defined(USE_HOLD_TAP_LAYER_BUTTONS)
+// activation of the "Buttons" layer. The Corne Xiao v1 port always uses the
+// hold-tap activation keys on the edge of the core cluster, so only that
+// variant is kept.
 #define P_LB4_QWT  &hll L_BUT Z
 #define P_RB4_QWT  &hlr L_BUT FSLH
 #define P_SF4_QWT  &none
 #define P_SF4_BUT  &none
 #define P_SB4_BUT  UNDO_TOG_BUT_LAYER
-#else
-#define P_SF4_QWT  &motg_but
-#define P_SF4_BUT  &tog L_BUT
-#define P_SB4_BUT  &kp MAC_UNDO
-#endif
 
 // Definition of macros representing all alternative positions for the
-// activation of the "Functions" layer.
-//
-// When a keyboard uses hold-tap for both "Buttons" and "Functions", the
-// "Buttons" key sits on the outer edge of the core cluster and "Functions"
-// right beside it toward the inner side. When only "Functions" uses hold-tap,
-// that key takes the outer edge of the main cluster.
-#if defined(USE_HOLD_TAP_LAYER_BUTTONS) && defined(USE_HOLD_TAP_LAYER_FUNCTIONS)
+// activation of the "Functions" layer. The Corne Xiao v1 port always uses
+// hold-tap for both "Buttons" and "Functions", so only that variant is kept.
 #define P_RB3_QWT  &hlr L_FUN DOT
 #define P_RF3_QWT  &none
 #define P_RF3_FUN  &none
 #define P_RB3_FUN  &tog L_FUN
 #define P_RB4_FUN  &none
-#elif !defined(USE_HOLD_TAP_LAYER_BUTTONS) && !defined(USE_HOLD_TAP_LAYER_FUNCTIONS)
-#define P_RB4_QWT  &kp FSLH
-#define P_RB3_QWT  &kp DOT
-#define P_RF3_QWT  &motg_fun
-#define P_RF3_FUN  &tog L_FUN
-#define P_RB3_FUN  &none
-#define P_RB4_FUN  &none
-#elif !defined(USE_HOLD_TAP_LAYER_BUTTONS)
-#define P_RB4_QWT  &hlr L_FUN FSLH
-#define P_RB3_QWT  &kp DOT
-#define P_RF3_QWT  &none
-#define P_RF3_FUN  &none
-#define P_RB3_FUN  &none
-#define P_RB4_FUN  &tog L_FUN
-#else
-#define P_RB3_QWT  &kp DOT
-#define P_RF3_QWT  &motg_fun
-#define P_RF3_FUN  &tog L_FUN
-#define P_RB3_FUN  &none
-#define P_RB4_FUN  &none
-#endif
 
 // The MOUSE layer is not part of this Corne Xiao v1 port, so the left-hand
 // positions that would have activated it are fixed to plain keys.
@@ -136,17 +106,6 @@
 
     // Tap: -
     // Shift-tap: -
-    // Double-tap: Toggle Navigation Layer
-    // Hold: Activate Navigation Layer
-    motg_nav: momentary_or_toggle_layer_nav {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&mo L_NAV>, <&tog L_NAV>;
-    };
-
-    // Tap: -
-    // Shift-tap: -
     // Double-tap: Toggle System Layer
     // Hold: Activate System Layer
     motg_sys: momentary_or_toggle_layer_sys {
@@ -156,88 +115,12 @@
       bindings = <&mo L_SYS>, <&tog L_SYS>;
     };
 
-    // Tap: -
-    // Shift-tap: -
-    // Double-tap: Toggle Buttons Layer
-    // Hold: Activate Buttons Layer
-    motg_but: momentary_or_toggle_layer_but {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&mo L_BUT>, <&tog L_BUT>;
-    };
-
-    // Tap: -
-    // Shift-tap: -
-    // Double-tap: Toggle Functions Layer
-    // Hold: Activate Functions Layer
-    motg_fun: momentary_or_toggle_layer_fun {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&mo L_FUN>, <&tog L_FUN>;
-    };
-
-    // Tap: Backslash ('\')
-    // Shift-tap: Pipe ('|')
-    // Double-tap: -
-    // Hold: Apple Globe key
-    // Morph: with Cmd => Command + tilde
-    globebslh: globe_or_backslash {
-      compatible = "zmk,behavior-mod-morph";
-      #binding-cells = <0>;
-      bindings = <&hml GLOBE BSLH>, <&kp TILDE>;
-      mods = <(MOD_LGUI|MOD_RGUI)>;
-      keep-mods = <(MOD_LGUI|MOD_RGUI)>;
-    };
-
-    // Tap: Left square bracket ('[')
-    // Shift-tap: Left curly brace ('{')
-    // Double-tap: -
-    // Hold: -
-    // Morph: with Cmd => Command + grave
-    lbktgrave: left_bracket_or_cmd_grave {
-      compatible = "zmk,behavior-mod-morph";
-      #binding-cells = <0>;
-      bindings = <&kp LBKT>, <&kp GRAVE>;
-      mods = <(MOD_LGUI|MOD_RGUI)>;
-      keep-mods = <(MOD_LGUI|MOD_RGUI)>;
-    };
-
-    // Tap: Grave ('`')
-    // Shift-tap: Tilde ('~')
-    // Double-tap: Turn on CAPS_WORD
-    gravecaps: grave_or_capsword {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&kp GRAVE>, <&caps_word>;
-    };
-
-    // Tap: Single quote ("'")
-    // Shift-tap: Double quote ('"')
-    // Double-tap: Turn on CAPS_WORD
-    sqtcaps: singlequote_or_capsword {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&kp SQT>, <&caps_word>;
-    };
-
     // Windows: Alt+Tab to switch to the next application (hold Alt, tap Tab).
     appswtnxt: application_switch_next {
       compatible = "zmk,behavior-tri-state";
       #binding-cells = <0>;
       bindings = <&kt LALT>, <&kp TAB>, <&kt LALT>;
       ignored-key-positions = <LT5 LM5>;
-    };
-
-    // Windows: Alt+Esc to switch to the next window without Alt-Tab dialog.
-    winswtnxt: window_switch_next {
-      compatible = "zmk,behavior-tri-state";
-      #binding-cells = <0>;
-      bindings = <&kt LALT>, <&kp ESC>, <&kt LALT>;
-      ignored-key-positions = <LB5 LM5>;
     };
 
     // Windows: Alt+Shift+Tab to switch to the previous application.
@@ -292,10 +175,10 @@
     MAIN {
       display-name = "QWERTY";
       bindings = <LAYER_ADAPTER(
-        &lbktgrave, &kp_rN1,   &kp_rN2,   &kp_rN3,   &kp_rN4,   &kp_rN5,                              &kp_rN6,       &kp_rN7,   &kp_rN8,   &kp_rN9,   &kp_rN0,   &kp RBKT,
+        &kp LBKT, &kp_rN1,     &kp_rN2,   &kp_rN3,   &kp_rN4,   &kp_rN5,                              &kp_rN6,       &kp_rN7,   &kp_rN8,   &kp_rN9,   &kp_rN0,   &kp RBKT,
         &kp TAB,    &kp Q,     &kp W,     &kp E,     &kp R,     &kp T,        &kp LHYP,    &kp RHYP,  &kp Y,         &kp U,     &kp I,     &kp O,     &kp P,     &kp MINUS,
         &kp GRAVE,  LHM4(A),   LHM3(S),   LHM2(D),   LHM1(F),   &kp G,        &kp LMEH,    &kp RMEH,  &kp H,         RHM1(J),   RHM2(K),   RHM3(L),   RHM4(SEMI), &kp SQT,
-        &globebslh, P_LB4_QWT, P_LB3_QWT, &kp C,     AS(V),     &kp B,        &kp HOME,    &kp PG_UP, &kp N,         &kp M,     &kp COMMA, P_RB3_QWT, P_RB4_QWT, &hmr GLOBE EQUAL,
+        &kp BSLH, P_LB4_QWT, P_LB3_QWT, &kp C,     AS(V),     &kp B,        &kp HOME,    &kp PG_UP, &kp N,         &kp M,     &kp COMMA, P_RB3_QWT, P_RB4_QWT, &kp EQUAL,
                     &motg_sys, P_SF4_QWT, P_LF3_QWT, &bspcnav,  &lt L_SYM ESC, &kp END,    &kp PG_DN, &lt L_MED RET, &hlr L_NUM SPACE,    P_RF3_QWT, P_SF4_QWT, &motg_sys
       )>;
     };
