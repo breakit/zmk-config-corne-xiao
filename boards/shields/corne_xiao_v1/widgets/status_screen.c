@@ -58,6 +58,15 @@ static lv_obj_t *caps_label;
 static lv_obj_t *layer_label;
 static lv_obj_t *wpm_label;
 static lv_obj_t *cat_label;
+static lv_obj_t *graph_canvas;
+
+/* Rolling WPM bar graph. */
+#define GRAPH_W 40
+#define GRAPH_H 16
+#define GRAPH_BARS 20
+#define WPM_MAX 120
+static lv_color_t graph_cbuf[GRAPH_W * GRAPH_H];
+static uint8_t wpm_hist[GRAPH_BARS];
 #endif
 
 /* Latest peripheral (right half) battery level, fed by its own event. */
@@ -82,6 +91,37 @@ static void start_cat_anim(lv_obj_t *cat) {
     lv_anim_set_repeat_count(&a, 2);
     lv_anim_set_path_cb(&a, cat_anim_path);
     lv_anim_start(&a);
+}
+
+/* Record a WPM sample into the rolling history and redraw the bar graph. */
+static void push_wpm(uint8_t wpm) {
+    for (int i = 0; i < GRAPH_BARS - 1; i++) {
+        wpm_hist[i] = wpm_hist[i + 1];
+    }
+    wpm_hist[GRAPH_BARS - 1] = wpm;
+
+    if (graph_canvas == NULL) {
+        return;
+    }
+
+    lv_color_t bg = lv_color_white();
+    lv_color_t fg = lv_color_black();
+    lv_canvas_fill_bg(graph_canvas, bg, LV_OPA_COVER);
+
+    int bar_w = GRAPH_W / GRAPH_BARS; /* ~2 px */
+    for (int i = 0; i < GRAPH_BARS; i++) {
+        uint32_t h = (uint32_t)wpm_hist[i] * GRAPH_H / WPM_MAX;
+        if (h > GRAPH_H) {
+            h = GRAPH_H;
+        }
+        int x = i * bar_w;
+        for (int py = 0; py < (int)h; py++) {
+            int y = GRAPH_H - 1 - py;
+            for (int px = 0; px < bar_w; px++) {
+                lv_canvas_set_px(graph_canvas, x + px, y, fg, LV_OPA_COVER);
+            }
+        }
+    }
 }
 #endif /* CONFIG_ZMK_SPLIT_ROLE_CENTRAL */
 
@@ -124,6 +164,7 @@ static void render(struct status_state s) {
     if (wpm_label) {
         snprintf(text, sizeof(text), "%u", s.wpm);
         lv_label_set_text(wpm_label, text);
+        push_wpm(s.wpm);
     }
 
     if (cat_label) {
@@ -215,6 +256,11 @@ lv_obj_t *zmk_display_status_screen() {
     output_label = lv_label_create(screen);
     lv_obj_align(output_label, LV_ALIGN_TOP_MID, 0, 0);
     lv_label_set_text(output_label, "");
+
+    graph_canvas = lv_canvas_create(screen);
+    lv_canvas_set_buffer(graph_canvas, graph_cbuf, GRAPH_W, GRAPH_H, LV_COLOR_FORMAT_NATIVE);
+    lv_obj_align(graph_canvas, LV_ALIGN_BOTTOM_MID, 0, 0);
+    lv_canvas_fill_bg(graph_canvas, lv_color_white(), LV_OPA_COVER);
 #endif
 
     batt_label = lv_label_create(screen);
