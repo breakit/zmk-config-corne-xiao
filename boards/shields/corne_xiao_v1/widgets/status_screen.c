@@ -1,11 +1,16 @@
 /*
  * Custom ZMK status screen for the Corne Xiao v1 (LVGL 9 / ZMK main).
  *
- * Central (left) display, 128x32. Shows, on a single screen:
+ * Central (left) display, 128x32, showing on one screen:
  *   - both halves' battery: "L<l>% R<r>%" (peripheral fetched over BLE)
  *   - WPM readout + a playful Bongo-Cat style cat that "plays" (bounces)
- *     whenever typing is detected
+ *     while typing
  *   - the active layer name
+ *   - output mode (USB/Bluetooth profile) + right-half connectivity
+ *   - Caps Lock indicator
+ *
+ * The battery widget also runs on the peripheral (right) half; the rest is
+ * central-only (those subsystems are wired up only on the central role).
  *
  * Requires CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=y and
  * CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING=y.
@@ -20,17 +25,30 @@ LOG_MODULE_REGISTER(nice_status, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/display.h>
 #include <zmk/battery.h>
 #include <zmk/event_manager.h>
+#include <zmk/endpoints.h>
 #include <zmk/events/battery_state_changed.h>
+#include <zmk/events/endpoint_changed.h>
+#include <zmk/events/hid_indicators_changed.h>
 #include <zmk/events/layer_state_changed.h>
 #include <zmk/events/wpm_state_changed.h>
+#include <zmk/hid_indicators.h>
 #include <zmk/keymap.h>
 #include <zmk/wpm.h>
+#include <dt-bindings/zmk/hid_indicators.h>
+
+#if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+#include <zmk/split/bluetooth/peripheral.h>
+#endif
 
 struct status_state {
     uint8_t local_batt;
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     uint8_t wpm;
     const char *layer;
+    bool periph_connected;
+    bool caps_lock;
+    enum zmk_transport transport;
+    int profile_index;
 #endif
 };
 
@@ -40,6 +58,8 @@ struct periph_batt_state {
 
 static lv_obj_t *batt_label;
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+static lv_obj_t *output_label;
+static lv_obj_t *caps_label;
 static lv_obj_t *layer_label;
 static lv_obj_t *wpm_label;
 static lv_obj_t *cat_label;
@@ -83,6 +103,26 @@ static void render(struct status_state s) {
     }
 
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+    if (output_label) {
+        switch (s.transport) {
+        case ZMK_TRANSPORT_USB:
+            strcpy(text, LV_SYMBOL_USB " USB");
+            break;
+        case ZMK_TRANSPORT_BLE:
+            snprintf(text, sizeof(text), LV_SYMBOL_WIFI " BLE%d", s.profile_index + 1);
+            break;
+        default:
+            strcpy(text, LV_SYMBOL_CLOSE);
+            break;
+        }
+        strcat(text, s.periph_connected ? " " LV_SYMBOL_OK : " " LV_SYMBOL_CLOSE);
+        lv_label_set_text(output_label, text);
+    }
+
+    if (caps_label) {
+        lv_label_set_text(caps_label, s.caps_lock ? "CAP" : "");
+    }
+
     if (layer_label) {
         lv_label_set_text_fmt(layer_label, "%s", s.layer ? s.layer : "BASE");
     }
@@ -117,7 +157,18 @@ static struct status_state status_get_state(const zmk_event_t *eh) {
     if (index != 0) {
         s.layer = zmk_keymap_layer_name(zmk_keymap_layer_index_to_id(index));
     }
+    s.periph_connected = zmk_split_bt_peripheral_is_connected();
 #endif
+
+#if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+    zmk_hid_indicators_t hid = zmk_hid_indicators_get_current_profile();
+    s.caps_lock = (hid & HID_INDICATOR_CAPS_LOCK) != 0;
+
+    struct zmk_endpoint_instance ep = zmk_endpoint_get_selected();
+    s.transport = ep.transport;
+    s.profile_index = ep.transport == ZMK_TRANSPORT_BLE ? ep.ble.profile_index : 0;
+#endif
+
     return s;
 }
 
@@ -125,6 +176,8 @@ ZMK_DISPLAY_WIDGET_LISTENER(status_widget, struct status_state, status_update_cb
                             status_get_state)
 ZMK_SUBSCRIPTION(status_widget, zmk_battery_state_changed);
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+ZMK_SUBSCRIPTION(status_widget, zmk_hid_indicators_changed);
+ZMK_SUBSCRIPTION(status_widget, zmk_endpoint_changed);
 ZMK_SUBSCRIPTION(status_widget, zmk_layer_state_changed);
 ZMK_SUBSCRIPTION(status_widget, zmk_wpm_state_changed);
 #endif
@@ -161,6 +214,14 @@ lv_obj_t *zmk_display_status_screen() {
     layer_label = lv_label_create(screen);
     lv_obj_align(layer_label, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
     lv_label_set_text(layer_label, "BASE");
+
+    caps_label = lv_label_create(screen);
+    lv_obj_align(caps_label, LV_ALIGN_TOP_LEFT, 2, 0);
+    lv_label_set_text(caps_label, "");
+
+    output_label = lv_label_create(screen);
+    lv_obj_align(output_label, LV_ALIGN_TOP_MID, 0, 0);
+    lv_label_set_text(output_label, "");
 #endif
 
     batt_label = lv_label_create(screen);
