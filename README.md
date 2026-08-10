@@ -13,7 +13,7 @@ The config builds split left/right firmware for the Corne Xiao (`xiao_ble//zmk`)
 - **Board:** Seeed Studio XIAO BLE (`xiao_ble//zmk`).
 - **Shield:** `corne_xiao_v1_left` / `corne_xiao_v1_right`, plus the `rgbled_adapter` shield (wiring for optional WS2812 underglow).
 - **Controller**: one XIAO per half; the **left** half is the split *central* role.
-- **Display:** a 128×32 SSD1306 OLED on the central (left) half, showing a custom two-battery status screen (`L<x%> R<y%>`).
+- **Display:** a 128×32 SSD1306 OLED on the central (left) half, showing a custom status screen: both halves' battery (`L<x%> R<y%>`), a WPM readout with a Bongo-Cat-style cat that plays while typing, and the active layer name.
 - **Right half display:** the OLED stays in use until/unless a Cirque GlidePoint trackpad is installed in its place (see [Trackpad (optional)](#trackpad-optional)).
 
 ### Kconfig notes (`config/corne_xiao_v1.conf`)
@@ -25,7 +25,8 @@ The config builds split left/right firmware for the Corne Xiao (`xiao_ble//zmk`)
 | `CONFIG_ZMK_DISPLAY=y` | Enables the display subsystem (LVGL + SSD1306). |
 | `CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING=y` | Central fetches the right half's battery level over BLE. |
 | `CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_PROXY=y` | Exposes the peripheral battery through a Battery Service. |
-| `CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=y` | Uses the custom two-battery status screen. |
+| `CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=y` | Uses the custom OLED status screen (battery, WPM + Bongo-Cat, layer). |
+| `CONFIG_ZMK_WPM=y` | Words-per-minute tracking for the status screen. |
 | `CONFIG_LV_USE_LABEL=y` | LVGL label support for the custom screen. |
 | `CONFIG_ZMK_HID_CONSUMER_REPORT_USAGES_FULL=y` | Full consumer HID usages (media/app shortcuts). |
 | `CONFIG_ZMK_POINTING=y` | Pointing/mouse stack for the optional trackpad. |
@@ -187,7 +188,7 @@ boards/shields/corne_xiao_v1/
   layout/                                  # shared layout sources
     standard_layout.dtsi                   # the 8 layers
     homerowmods.dtsi, autoshift.dtsi, ...
-  widgets/two_battery_status.c             # dual-battery OLED status screen
+  widgets/status_screen.c                  # OLED status screen (battery, WPM, layer)
   corne_xiao_v1_trackpad.dtsi              # Cirque trackpad wiring (disabled)
 media/                                     # keymap-drawer layer images + generator
 ```
