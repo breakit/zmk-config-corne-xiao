@@ -28,7 +28,7 @@ The config builds split left/right firmware for the Corne Xiao (`xiao_ble//zmk`)
 | `CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=y` | Uses the custom OLED status screen (battery, WPM + Bongo-Cat, layer). |
 | `CONFIG_ZMK_WPM=y` | Words-per-minute tracking for the status screen. |
 | `CONFIG_LV_USE_LABEL=y` | LVGL label support for the custom screen. |
-| `CONFIG_ZMK_HID_CONSUMER_REPORT_USAGES_FULL=y` | Full consumer HID usages (media/app shortcuts). |
+| `CONFIG_ZMK_HID_CONSUMER_REPORT_USAGES_BASIC=y` | Basic consumer HID usages (volume/brightness/media; best host compatibility). |
 | `CONFIG_ZMK_POINTING=y` | Pointing/mouse stack for the optional trackpad. |
 
 ### Trackpad (optional)
