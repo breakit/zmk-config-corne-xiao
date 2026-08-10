@@ -36,16 +36,11 @@ LOG_MODULE_REGISTER(nice_status, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/wpm.h>
 #include <dt-bindings/zmk/hid_indicators.h>
 
-#if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
-#include <zmk/split/bluetooth/peripheral.h>
-#endif
-
 struct status_state {
     uint8_t local_batt;
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     uint8_t wpm;
     const char *layer;
-    bool periph_connected;
     bool caps_lock;
     enum zmk_transport transport;
     int profile_index;
@@ -115,7 +110,6 @@ static void render(struct status_state s) {
             strcpy(text, LV_SYMBOL_CLOSE);
             break;
         }
-        strcat(text, s.periph_connected ? " " LV_SYMBOL_OK : " " LV_SYMBOL_CLOSE);
         lv_label_set_text(output_label, text);
     }
 
@@ -157,7 +151,6 @@ static struct status_state status_get_state(const zmk_event_t *eh) {
     if (index != 0) {
         s.layer = zmk_keymap_layer_name(zmk_keymap_layer_index_to_id(index));
     }
-    s.periph_connected = zmk_split_bt_peripheral_is_connected();
 #endif
 
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
