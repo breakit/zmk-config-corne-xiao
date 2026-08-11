@@ -50,5 +50,6 @@ endchoice
 config ZMK_DISPLAY_STATUS_SCREEN_CUSTOM
     select LV_USE_LABEL
     select LV_USE_THEME_MONO
+    select ZMK_WPM
 
 endif
