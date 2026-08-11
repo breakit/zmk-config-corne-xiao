@@ -40,9 +40,14 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #define ROW_WPM 11
 #define ROW_BAT 22
 
-/* WPM sparkline graph. */
+/* WPM sparkline graph.
+ * Drawn with native lv_line objects directly on the screen (no canvas), so it
+ * renders in the 1-bit display's native format without a conversion buffer.
+ * (A canvas here caused boot hang + display artifacts on this board.) */
+#define GRAPH_X 88
+#define GRAPH_Y (ROW_WPM + 2)
 #define GRAPH_W 36
-#define GRAPH_H 22
+#define GRAPH_H 20
 #define WPM_HISTORY_LEN 24
 
 static lv_obj_t *refs_output;
@@ -54,47 +59,31 @@ static lv_obj_t *refs_modifiers;
 
 static uint8_t wpm_history[WPM_HISTORY_LEN];
 static uint8_t wpm_head;
-static uint16_t graph_buf[GRAPH_W * GRAPH_H]; /* RGB565 canvas buffer */
+static lv_point_t graph_pts[WPM_HISTORY_LEN];
 
 static void wpm_history_push(uint8_t wpm) {
     wpm_head = (wpm_head + 1) % WPM_HISTORY_LEN;
     wpm_history[wpm_head] = wpm;
 }
 
-static void draw_wpm_graph(void) {
-    if (refs_wpm_graph == NULL)
-        return;
-
-    lv_canvas_fill_bg(refs_wpm_graph, lv_color_black(), LV_OPA_COVER);
-
-    lv_layer_t layer;
-    lv_canvas_init_layer(refs_wpm_graph, &layer);
-
-    lv_draw_line_dsc_t dsc;
-    lv_draw_line_dsc_init(&dsc);
-    dsc.color = lv_color_white();
-    dsc.width = 1;
-
-    int prev_x = -1, prev_y = -1;
+/* Recompute the sparkline point array from wpm_history[]. */
+static void update_graph_points(void) {
     for (int i = 0; i < WPM_HISTORY_LEN; i++) {
         int idx =
             ((int)wpm_head - (WPM_HISTORY_LEN - 1 - i) + 2 * WPM_HISTORY_LEN) % WPM_HISTORY_LEN;
         uint8_t v = wpm_history[idx];
-        int y_px = (GRAPH_H - 1) - (v > 100 ? 100 : v) * (GRAPH_H - 1) / 100;
-        int x_px = i * (GRAPH_W - 1) / (WPM_HISTORY_LEN - 1);
-
-        if (prev_x >= 0) {
-            dsc.p1.x = prev_x;
-            dsc.p1.y = prev_y;
-            dsc.p2.x = x_px;
-            dsc.p2.y = y_px;
-            lv_draw_line(&layer, &dsc);
-        }
-        prev_x = x_px;
-        prev_y = y_px;
+        int y = (GRAPH_H - 1) - (v > 100 ? 100 : v) * (GRAPH_H - 1) / 100;
+        int x = i * (GRAPH_W - 1) / (WPM_HISTORY_LEN - 1);
+        graph_pts[i].x = x;
+        graph_pts[i].y = y;
     }
+}
 
-    lv_canvas_finish_layer(refs_wpm_graph, &layer);
+static void draw_wpm_graph(void) {
+    if (refs_wpm_graph == NULL)
+        return;
+    update_graph_points();
+    lv_line_set_points(refs_wpm_graph, graph_pts, WPM_HISTORY_LEN);
 }
 
 struct status_state {
@@ -234,9 +223,9 @@ lv_obj_t *zmk_display_status_screen() {
     lv_label_set_text(refs_wpm_number, "0");
     lv_obj_set_pos(refs_wpm_number, VALUE_X, ROW_WPM + 2);
 
-    refs_wpm_graph = lv_canvas_create(screen);
-    lv_canvas_set_buffer(refs_wpm_graph, graph_buf, GRAPH_W, GRAPH_H, LV_COLOR_FORMAT_RGB565);
-    lv_obj_set_pos(refs_wpm_graph, 88, ROW_WPM);
+    refs_wpm_graph = lv_line_create(screen);
+    lv_line_set_points(refs_wpm_graph, graph_pts, WPM_HISTORY_LEN);
+    lv_obj_set_pos(refs_wpm_graph, GRAPH_X, GRAPH_Y);
 
     refs_battery = lv_label_create(screen);
     lv_label_set_text(refs_battery, "-");
