@@ -170,7 +170,7 @@ lv_obj_t *zmk_display_status_screen() {
 
     refs_output = lv_label_create(screen);
     lv_label_set_text(refs_output, " ");
-    lv_obj_align(refs_output, LV_ALIGN_TOP_RIGHT, -4, ROW_LAYER + 2);
+    lv_obj_set_pos(refs_output, 100, ROW_LAYER + 2);
 
     refs_layer = lv_label_create(screen);
     lv_label_set_text(refs_layer, "-");
