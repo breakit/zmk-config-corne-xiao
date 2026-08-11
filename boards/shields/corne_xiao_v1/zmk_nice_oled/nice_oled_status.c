@@ -34,28 +34,40 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #include <dt-bindings/zmk/modifiers.h>
 
-#define LEGEND_X 2
-#define VALUE_X 40
+/* nice!oled-inspired layout for the 128x32 SSD1306.
+ * Two horizontal bands, each with a boxed icon + text region:
+ *   Top   : [ USBBT ] [ layer ]          [ mods ]   y 0..15
+ *   Bottom: [ BATT% ] [ WPM num ] [sparkline ]      y 16..31
+ */
+#define ICON_W 22
+#define ICON_H 15
+#define ICONX 2
+#define ICONY_TOP 1
+#define ICONY_BOT 17
 
-#define ROW_LAYER 2
-#define ROW_WPM 11
-#define ROW_BAT 22
+#define NAME_X 28
+#define NAME_Y_TOP 4
 
-/* WPM sparkline graph.
- * Drawn with native lv_line objects directly on the screen (no canvas), so it
- * renders in the 1-bit display's native format without a conversion buffer.
- * (A canvas here caused boot hang + display artifacts on this board.) */
-#define GRAPH_X 88
-#define GRAPH_Y (ROW_WPM + 2)
-#define GRAPH_W 36
-#define GRAPH_H 20
+#define MOD_X 88
+
+#define BATT_TEXT_X 28
+#define BATT_TEXT_Y_BOT 19
+#define WPM_NUM_X 54
+#define WPM_NUM_Y_BOT 17
+#define GRAPH_X 96
+#define GRAPH_Y (17 + 1)
+#define GRAPH_W 30
+#define GRAPH_H 14
 #define WPM_HISTORY_LEN 24
 
-static lv_obj_t *refs_output;
+static lv_obj_t *refs_output_icon; /* boxed output icon */
+static lv_obj_t *refs_output_label;
 static lv_obj_t *refs_layer;
 static lv_obj_t *refs_wpm_number;
 static lv_obj_t *refs_wpm_graph;
-static lv_obj_t *refs_battery;
+static lv_obj_t *refs_battery_icon; /* boxed battery icon */
+static lv_obj_t *refs_battery_icon_text;
+static lv_obj_t *refs_battery_label;
 static lv_obj_t *refs_modifiers;
 
 static uint8_t wpm_history[WPM_HISTORY_LEN];
@@ -133,7 +145,7 @@ static void redraw_cb(struct status_state *s) {
         out = " ";
         break;
     }
-    lv_label_set_text(refs_output, out);
+    lv_label_set_text(refs_output_label, out);
 
     if (s->layer_label != NULL) {
         lv_label_set_text(refs_layer, s->layer_label);
@@ -143,14 +155,32 @@ static void redraw_cb(struct status_state *s) {
         lv_label_set_text(refs_layer, text);
     }
 
+    /* Battery: boxed icon shows a charge/battery glyph + level text. */
+    const char *batt_glyph = LV_SYMBOL_BATTERY_EMPTY;
+    if (s->battery > 95) {
+        batt_glyph = LV_SYMBOL_BATTERY_FULL;
+    } else if (s->battery > 65) {
+        batt_glyph = LV_SYMBOL_BATTERY_3;
+    } else if (s->battery > 35) {
+        batt_glyph = LV_SYMBOL_BATTERY_2;
+    } else if (s->battery > 5) {
+        batt_glyph = LV_SYMBOL_BATTERY_1;
+    }
+#if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
+    if (s->charging) {
+        batt_glyph = LV_SYMBOL_CHARGE;
+    }
+#endif
+    lv_label_set_text(refs_battery_icon_text, batt_glyph);
+
     char text[16] = {};
     bool show_periph = s->peripheral_battery > 0 && s->peripheral_battery <= 100;
     if (show_periph && IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING)) {
-        snprintf(text, sizeof(text), "%d/%d%%", s->battery, s->peripheral_battery);
+        snprintf(text, sizeof(text), "%d/%d", s->battery, s->peripheral_battery);
     } else {
-        snprintf(text, sizeof(text), "%d%%", s->battery);
+        snprintf(text, sizeof(text), "%d", s->battery);
     }
-    lv_label_set_text(refs_battery, text);
+    lv_label_set_text(refs_battery_label, text);
 
     char mods[8] = {};
     if (s->modifiers & MOD_LCTL)
@@ -222,45 +252,58 @@ lv_obj_t *zmk_display_status_screen() {
     screen = lv_obj_create(NULL);
     lv_obj_set_style_border_width(screen, 0, 0);
 
-    static const struct {
-        const char *text;
-        lv_coord_t x, y;
-    } legends[] = {
-        {"LAYER", LEGEND_X, ROW_LAYER + 2},
-        {"WPM", LEGEND_X, ROW_WPM + 2},
-        {"BATT", LEGEND_X, ROW_BAT + 2},
-        {"MOD", 90, ROW_BAT + 2},
-    };
+    /* Inverted icon style: white box, black glyph. */
+    static lv_style_t st_icon;
+    lv_style_init(&st_icon);
+    lv_style_set_bg_color(&st_icon, lv_color_white());
+    lv_style_set_bg_opa(&st_icon, LV_OPA_COVER);
+    lv_style_set_text_color(&st_icon, lv_color_black());
+    lv_style_set_pad_all(&st_icon, 2);
+    lv_style_set_radius(&st_icon, 0);
 
-    for (size_t i = 0; i < ARRAY_SIZE(legends); i++) {
-        lv_obj_t *l = lv_label_create(screen);
-        lv_label_set_text(l, legends[i].text);
-        lv_obj_set_pos(l, legends[i].x, legends[i].y);
-    }
+    static lv_style_t st_name;
+    lv_style_init(&st_name);
+    lv_style_set_text_font(&st_name, &lv_font_montserrat_16);
 
-    refs_output = lv_label_create(screen);
-    lv_label_set_text(refs_output, " ");
-    lv_obj_set_pos(refs_output, 100, ROW_LAYER + 2);
+    /* ---- Top band: output icon box + layer name + mods ---- */
+    refs_output_icon = lv_obj_create(screen);
+    lv_obj_add_style(refs_output_icon, &st_icon, 0);
+    lv_obj_set_size(refs_output_icon, ICON_W, ICON_H);
+    lv_obj_set_pos(refs_output_icon, ICONX, ICONY_TOP);
+    refs_output_label = lv_label_create(refs_output_icon);
+    lv_label_set_text(refs_output_label, " ");
+    lv_obj_center(refs_output_label);
 
     refs_layer = lv_label_create(screen);
+    lv_obj_add_style(refs_layer, &st_name, 0);
     lv_label_set_text(refs_layer, "-");
-    lv_obj_set_pos(refs_layer, VALUE_X, ROW_LAYER + 2);
+    lv_obj_set_pos(refs_layer, NAME_X, NAME_Y_TOP);
+
+    refs_modifiers = lv_label_create(screen);
+    lv_label_set_text(refs_modifiers, "");
+    lv_obj_set_pos(refs_modifiers, MOD_X, NAME_Y_TOP + 3);
+
+    /* ---- Bottom band: battery icon box (+ level) + WPM number + sparkline ---- */
+    refs_battery_icon = lv_obj_create(screen);
+    lv_obj_add_style(refs_battery_icon, &st_icon, 0);
+    lv_obj_set_size(refs_battery_icon, ICON_W, ICON_H);
+    lv_obj_set_pos(refs_battery_icon, ICONX, ICONY_BOT);
+    refs_battery_icon_text = lv_label_create(refs_battery_icon);
+    lv_label_set_text(refs_battery_icon_text, LV_SYMBOL_BATTERY_3);
+    lv_obj_center(refs_battery_icon_text);
+
+    refs_battery_label = lv_label_create(screen);
+    lv_label_set_text(refs_battery_label, "0");
+    lv_obj_set_pos(refs_battery_label, BATT_TEXT_X, BATT_TEXT_Y_BOT);
 
     refs_wpm_number = lv_label_create(screen);
+    lv_obj_add_style(refs_wpm_number, &st_name, 0);
     lv_label_set_text(refs_wpm_number, "0");
-    lv_obj_set_pos(refs_wpm_number, VALUE_X, ROW_WPM + 2);
+    lv_obj_set_pos(refs_wpm_number, WPM_NUM_X, WPM_NUM_Y_BOT);
 
     refs_wpm_graph = lv_line_create(screen);
     lv_line_set_points(refs_wpm_graph, graph_pts, WPM_HISTORY_LEN);
     lv_obj_set_pos(refs_wpm_graph, GRAPH_X, GRAPH_Y);
-
-    refs_battery = lv_label_create(screen);
-    lv_label_set_text(refs_battery, "-");
-    lv_obj_set_pos(refs_battery, VALUE_X, ROW_BAT + 2);
-
-    refs_modifiers = lv_label_create(screen);
-    lv_label_set_text(refs_modifiers, "");
-    lv_obj_set_pos(refs_modifiers, 108, ROW_BAT + 2);
 
     widget_nice_oled_output_init();
     widget_nice_oled_battery_init();
