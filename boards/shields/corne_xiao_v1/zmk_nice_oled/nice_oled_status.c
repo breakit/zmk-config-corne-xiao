@@ -40,11 +40,62 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #define ROW_WPM 11
 #define ROW_BAT 22
 
+/* WPM sparkline graph. */
+#define GRAPH_W 36
+#define GRAPH_H 22
+#define WPM_HISTORY_LEN 24
+
 static lv_obj_t *refs_output;
 static lv_obj_t *refs_layer;
 static lv_obj_t *refs_wpm_number;
+static lv_obj_t *refs_wpm_graph;
 static lv_obj_t *refs_battery;
 static lv_obj_t *refs_modifiers;
+
+static uint8_t wpm_history[WPM_HISTORY_LEN];
+static uint8_t wpm_head;
+static uint16_t graph_buf[GRAPH_W * GRAPH_H]; /* RGB565 canvas buffer */
+
+static void wpm_history_push(uint8_t wpm) {
+    wpm_head = (wpm_head + 1) % WPM_HISTORY_LEN;
+    wpm_history[wpm_head] = wpm;
+}
+
+static void draw_wpm_graph(void) {
+    if (refs_wpm_graph == NULL)
+        return;
+
+    lv_canvas_fill_bg(refs_wpm_graph, lv_color_black(), LV_OPA_COVER);
+
+    lv_layer_t layer;
+    lv_canvas_init_layer(refs_wpm_graph, &layer);
+
+    lv_draw_line_dsc_t dsc;
+    lv_draw_line_dsc_init(&dsc);
+    dsc.color = lv_color_white();
+    dsc.width = 1;
+
+    int prev_x = -1, prev_y = -1;
+    for (int i = 0; i < WPM_HISTORY_LEN; i++) {
+        int idx =
+            ((int)wpm_head - (WPM_HISTORY_LEN - 1 - i) + 2 * WPM_HISTORY_LEN) % WPM_HISTORY_LEN;
+        uint8_t v = wpm_history[idx];
+        int y_px = (GRAPH_H - 1) - (v > 100 ? 100 : v) * (GRAPH_H - 1) / 100;
+        int x_px = i * (GRAPH_W - 1) / (WPM_HISTORY_LEN - 1);
+
+        if (prev_x >= 0) {
+            dsc.p1.x = prev_x;
+            dsc.p1.y = prev_y;
+            dsc.p2.x = x_px;
+            dsc.p2.y = y_px;
+            lv_draw_line(&layer, &dsc);
+        }
+        prev_x = x_px;
+        prev_y = y_px;
+    }
+
+    lv_canvas_finish_layer(refs_wpm_graph, &layer);
+}
 
 struct status_state {
     struct zmk_endpoint_instance selected_endpoint;
@@ -121,9 +172,11 @@ static void battery_update_cb(struct status_state s) { redraw_cb(&s); }
 static void layer_update_cb(struct status_state s) { redraw_cb(&s); }
 static void modifiers_update_cb(struct status_state s) { redraw_cb(&s); }
 static void wpm_update_cb(struct status_state s) {
+    wpm_history_push(s.wpm);
     char text[8] = {};
     snprintf(text, sizeof(text), "%d", s.wpm);
     lv_label_set_text(refs_wpm_number, text);
+    draw_wpm_graph();
 }
 
 ZMK_DISPLAY_WIDGET_LISTENER(widget_nice_oled_output, struct status_state, output_update_cb,
@@ -180,6 +233,10 @@ lv_obj_t *zmk_display_status_screen() {
     refs_wpm_number = lv_label_create(screen);
     lv_label_set_text(refs_wpm_number, "0");
     lv_obj_set_pos(refs_wpm_number, VALUE_X, ROW_WPM + 2);
+
+    refs_wpm_graph = lv_canvas_create(screen);
+    lv_canvas_set_buffer(refs_wpm_graph, graph_buf, GRAPH_W, GRAPH_H, LV_COLOR_FORMAT_RGB565);
+    lv_obj_set_pos(refs_wpm_graph, 88, ROW_WPM);
 
     refs_battery = lv_label_create(screen);
     lv_label_set_text(refs_battery, "-");
