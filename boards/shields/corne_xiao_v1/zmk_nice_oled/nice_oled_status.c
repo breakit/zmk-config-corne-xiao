@@ -21,6 +21,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/keymap.h>
 #include <zmk/usb.h>
 #include <zmk/wpm.h>
+#include <zmk/split/central.h>
 
 #include <zmk/event_manager.h>
 #include <zmk/events/battery_state_changed.h>
@@ -92,6 +93,7 @@ struct status_state {
     bool ble_bonded;
     uint8_t battery;
     bool charging;
+    uint8_t peripheral_battery;
     uint8_t layer_index;
     const char *layer_label;
     uint8_t wpm;
@@ -108,6 +110,7 @@ static struct status_state status_state_get(const zmk_event_t *eh) {
         .ble_bonded = !zmk_ble_active_profile_is_open(),
         .battery = (batt_ev != NULL) ? batt_ev->state_of_charge : zmk_battery_state_of_charge(),
         .charging = zmk_usb_is_powered(),
+        .peripheral_battery = 0,
         .layer_index = layer,
         .layer_label = zmk_keymap_layer_name(layer),
         .wpm = zmk_wpm_get_state(),
@@ -141,7 +144,12 @@ static void redraw_cb(struct status_state *s) {
     }
 
     char text[16] = {};
-    snprintf(text, sizeof(text), "%d%%", s->battery);
+    bool show_periph = s->peripheral_battery > 0 && s->peripheral_battery <= 100;
+    if (show_periph && IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING)) {
+        snprintf(text, sizeof(text), "%d/%d%%", s->battery, s->peripheral_battery);
+    } else {
+        snprintf(text, sizeof(text), "%d%%", s->battery);
+    }
     lv_label_set_text(refs_battery, text);
 
     char mods[8] = {};
@@ -168,6 +176,22 @@ static void wpm_update_cb(struct status_state s) {
     draw_wpm_graph();
 }
 
+/* Peripheral (right) battery relayed over BLE, shown on the central screen. */
+#if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING)
+static void peripheral_batt_update_cb(struct status_state s) { redraw_cb(&s); }
+
+static struct status_state peripheral_batt_get_state(const zmk_event_t *eh) {
+    const struct zmk_peripheral_battery_state_changed *ev =
+        as_zmk_peripheral_battery_state_changed(eh);
+    struct status_state s = status_state_get(NULL);
+    s.peripheral_battery = (ev != NULL) ? ev->state_of_charge : 0;
+    return s;
+}
+
+ZMK_DISPLAY_WIDGET_LISTENER(widget_nice_oled_periph_batt, struct status_state,
+                            peripheral_batt_update_cb, peripheral_batt_get_state)
+#endif
+
 ZMK_DISPLAY_WIDGET_LISTENER(widget_nice_oled_output, struct status_state, output_update_cb,
                             status_state_get)
 ZMK_DISPLAY_WIDGET_LISTENER(widget_nice_oled_battery, struct status_state, battery_update_cb,
@@ -185,6 +209,9 @@ ZMK_SUBSCRIPTION(widget_nice_oled_battery, zmk_battery_state_changed);
 ZMK_SUBSCRIPTION(widget_nice_oled_layer, zmk_layer_state_changed);
 ZMK_SUBSCRIPTION(widget_nice_oled_mods, zmk_modifiers_state_changed);
 ZMK_SUBSCRIPTION(widget_nice_oled_wpm, zmk_wpm_state_changed);
+#if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING)
+ZMK_SUBSCRIPTION(widget_nice_oled_periph_batt, zmk_peripheral_battery_state_changed);
+#endif
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
 ZMK_SUBSCRIPTION(widget_nice_oled_output, zmk_usb_conn_state_changed);
 ZMK_SUBSCRIPTION(widget_nice_oled_battery, zmk_usb_conn_state_changed);
@@ -240,6 +267,9 @@ lv_obj_t *zmk_display_status_screen() {
     widget_nice_oled_layer_init();
     widget_nice_oled_mods_init();
     widget_nice_oled_wpm_init();
+#if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING)
+    widget_nice_oled_periph_batt_init();
+#endif
 
     return screen;
 }
