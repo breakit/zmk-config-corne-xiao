@@ -151,6 +151,7 @@ ZMK_SUBSCRIPTION(widget_nice_oled_battery, zmk_usb_conn_state_changed);
 lv_obj_t *zmk_display_status_screen() {
     lv_obj_t *screen;
     screen = lv_obj_create(NULL);
+    lv_obj_set_style_border_width(screen, 0, 0);
 
     static const struct {
         const char *text;
