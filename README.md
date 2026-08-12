@@ -69,6 +69,23 @@ There are **8 layers**. A brief summary of each layer follows; the images are ge
 | [`layer6-buttons.svg`](media/layer6-buttons.svg) | Buttons | 6 |
 | [`layer7-system.svg`](media/layer7-system.svg) | System | 7 |
 
+#### German (QWERTZ) labeled images
+
+The same layout can be viewed with **German QWERTZ** symbol labels (Y/Z swapped, umlauts `ö ä ü`, `ß`, and the German punctuation/number-row positions), rendered from the same ZMK keymap without changing it:
+
+| Image | Layer |
+|-------|-------|
+| [`layer0-main-de.svg`](media/layer0-main-de.svg) | QWERTY |
+| [`layer1-navigation-de.svg`](media/layer1-navigation-de.svg) | Navigation |
+| [`layer2-numbers-de.svg`](media/layer2-numbers-de.svg) | Numbers |
+| [`layer3-symbols-de.svg`](media/layer3-symbols-de.svg) | Symbols |
+| [`layer4-media-de.svg`](media/layer4-media-de.svg) | Media |
+| [`layer5-functions-de.svg`](media/layer5-functions-de.svg) | Functions |
+| [`layer6-buttons-de.svg`](media/layer6-buttons-de.svg) | Buttons |
+| [`layer7-system-de.svg`](media/layer7-system-de.svg) | System |
+
+Regenerate with `./media/generate-de.sh` (uses `media/keymap-config-de.yaml`, which `media/generate_de_config.py` builds from the base config).
+
 ### Layer 0 — QWERTY (base)
 
 ![layer0-main](media/layer0-main.svg)
