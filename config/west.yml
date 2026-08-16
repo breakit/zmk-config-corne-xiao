@@ -24,7 +24,7 @@ manifest:
       path: modules/zmk-tri-state
     - name: zmk-nice-oled
       remote: tokyo2006
-      revision: 4.0
+      revision: "4.0"
       path: modules/zmk-nice-oled
     - name: zmk-oled-adapter
       remote: mctechnology17
