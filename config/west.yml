@@ -8,8 +8,8 @@ manifest:
       url-base: https://github.com/dhruvinsh
     - name: mctechnology17
       url-base: https://github.com/mctechnology17
-    - name: tokyo2006
-      url-base: https://github.com/tokyo2006
+    - name: breakit
+      url-base: https://github.com/breakit
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -23,7 +23,7 @@ manifest:
       revision: main
       path: modules/zmk-tri-state
     - name: zmk-nice-oled
-      remote: tokyo2006
+      remote: breakit
       revision: "4.0"
       path: modules/zmk-nice-oled
     - name: zmk-oled-adapter
