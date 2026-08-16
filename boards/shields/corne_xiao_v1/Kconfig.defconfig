@@ -46,4 +46,10 @@ choice ZMK_DISPLAY_STATUS_SCREEN
     default ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN
 endchoice
 
+# Custom stock-look screen: two battery labels (central + peripheral).
+config ZMK_DISPLAY_STATUS_SCREEN_CUSTOM
+    select LV_USE_LABEL
+    select LV_USE_THEME_MONO
+    select LV_FONT_MONTSERRAT_16
+
 endif
