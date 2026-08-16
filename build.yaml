@@ -15,9 +15,9 @@
 include:
 # Revision 1
   - board: xiao_ble//zmk
-    shield: corne_xiao_v1_left rgbled_adapter
+    shield: corne_xiao_v1_left rgbled_adapter nice_oled oled_adapter_seeeduino_xiao_ble_128x32
   - board: xiao_ble//zmk
-    shield: corne_xiao_v1_right rgbled_adapter
+    shield: corne_xiao_v1_right rgbled_adapter nice_oled oled_adapter_seeeduino_xiao_ble_128x32
 
 # Revision 2
   - board: xiao_ble//zmk
