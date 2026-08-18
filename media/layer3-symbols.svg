@@ -323,6 +323,7 @@ rect.ghost { fill: #7b7e81; }
 </g>
 <g transform="translate(28, 105)" class="key keypos-12">
 <rect rx="6" ry="6" x="-24" y="-24" width="48" height="48" class="key"/>
+<text x="0" y="0" class="key tap">~</text>
 </g>
 <g transform="translate(84, 105)" class="key held keypos-13">
 <rect rx="6" ry="6" x="-24" y="-24" width="48" height="48" class="key held"/>
@@ -413,7 +414,6 @@ rect.ghost { fill: #7b7e81; }
 </g>
 <g transform="translate(224, 205)" class="key keypos-36">
 <rect rx="6" ry="6" x="-24" y="-24" width="48" height="48" class="key"/>
-<text x="0" y="0" class="key tap">~</text>
 </g>
 <g transform="translate(286, 213) rotate(15.0)" class="key keypos-37">
 <rect rx="6" ry="6" x="-24" y="-24" width="48" height="48" class="key"/>
