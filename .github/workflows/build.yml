@@ -3,3 +3,55 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+
+  # Regenerate the keymap-drawer layout images on every push so the media/
+  # SVGs always match the keymap.
+  regenerate-media:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install keymap-drawer
+        run: pip install keymap-drawer
+
+      - name: Regenerate layout images
+        run: ./media/generate.sh
+
+      - name: Commit and push regenerated images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add media
+          if git diff --cached --quiet; then
+            echo "Layout images are up to date."
+          else
+            git commit -m "docs: regenerate keymap layout images"
+            git push
+          fi
+
+  # On pull requests, verify the images are in sync instead of committing.
+  check-media-sync:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install keymap-drawer
+        run: pip install keymap-drawer
+
+      - name: Regenerate layout images
+        run: ./media/generate.sh
+
+      - name: Fail if images are out of date
+        run: git diff --exit-code -- media

@@ -10,7 +10,7 @@ The config builds split left/right firmware for the Corne Xiao (`xiao_ble//zmk`)
 - **Windows-oriented** Navigation and Buttons layers,
 - and a shared `LAYER_ADAPTER` that maps a 60-key logical layout onto the 42-key Corne physical matrix (also building the v2 revision).
 
-> Layout guide images (`.svg`) for every layer live in [`media/`](media/) and are generated with [Keymap-Drawer](https://keymap-drawer.streamlit.app/) — run `./media/generate.sh` to regenerate them.
+> Layout guide images (`.svg`) for every layer live in [`media/`](media/) and are generated with [Keymap-Drawer](https://keymap-drawer.streamlit.app/) — run `./media/generate.sh` to regenerate them. The GitHub Actions workflow also regenerates them on every push and commits any changes (on pull requests it only verifies they're in sync).
 
 ---
 
@@ -139,6 +139,7 @@ Windows-oriented movement and window management:
 - **Reset** (`&sys_reset`) and **output toggle** (`OUT_TOG`).
 - **Bluetooth:** select profile `0..4`, clear bond.
 - **Power:** external power toggle and `Ctrl+PrtSc` (power shortcut).
+- **Security:** `Ctrl+Alt+Del` on the right-middle row (physical `L`).
 - Layer toggle for System (`tog L_SYS`).
 
 ---

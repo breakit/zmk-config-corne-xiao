@@ -146,6 +146,18 @@
         , <&macro_release &kp LSHFT>
         , <&macro_release &kp LALT>;
     };
+
+    // Windows: Ctrl+Alt+Del (security / lock screen).
+    cad: ctrl_alt_del {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings
+        = <&macro_press &kp LCTRL>
+        , <&macro_press &kp LALT>
+        , <&macro_tap &kp DEL>
+        , <&macro_release &kp LALT>
+        , <&macro_release &kp LCTRL>;
+    };
   };
 };
 
@@ -189,7 +201,7 @@
       bindings = <LAYER_ADAPTER(
         &appPwinN,  &kp LC(N1),  &kp LC(N2),  &kp LC(N3),  &kp LC(N4),  &kp LC(N5),                         &none, &kp BTAB,       &kp LC(LS(G)), &kp LC(G),      &kp TAB,      &none,
         &appswtnxt, &kp LC(Q),   &kp LC(W),   &kp LC(E),   &kp LC(R),   &kp LC(T),   &kp LHYP,    &kp RHYP,  &none, &kp HOME,       &kp PG_DN,     &kp PG_UP,     &kp END,      &none,
-        &appPwinN,  LMT4(LC(A)), LMT3(LC(S)), LMT2(LC(D)), LMT1(LC(F)), NAV_LG_G,    &kp LMEH,    &kp RMEH,  &none, &kp LEFT,       &kp DOWN,      &kp UP,        &kp RIGHT,    &none,
+        &appPwinN,  LMT4(LC(A)), LMT3(LC(S)), LMT2(LC(D)), LMT1(LC(F)), NAV_LG_G,    &kp LMEH,    &kp RMEH,  &kp LEFT, &kp DOWN,      &kp UP,        &kp RIGHT,    &none, &none,
         &winPglobe, NAV_LG_Z,    NAV_LG_X,    NAV_LG_C,    NAV_LG_V,    &kp LC(B),   &kp HOME,    &kp PG_UP, &none, &kp LC(LEFT),  &kp HOME,      &kp END,       &kp LC(RIGHT), &none,
                     &none,       &none,       &none,       &tog L_NAV,  &none,      &kp END,     &kp PG_DN, &none, &none,        &none,         &none,         &tog L_NAV
       )>;
@@ -261,7 +273,7 @@
       bindings = <LAYER_ADAPTER(
         &none,       &none,       &none,       &none,       &none,   &none,                                     &none,        &none,        &none,        &none,        &none,         &none,
         &bootloader, &none,       &none,       &none,       &none,   &ext_power EP_TOG, &kp LHYP,    &kp RHYP,  &none,        &none,        &none,        &none,        &none,         &bootloader,
-        &sys_reset,  &none,       &none,       &none,       &none,   &out OUT_TOG,      &kp LMEH,    &kp RMEH,  &none,        &none,        &none,        &none,        &none,         &sys_reset,
+        &sys_reset,  &none,       &none,       &none,       &none,   &out OUT_TOG,      &kp LMEH,    &kp RMEH,  &none,        &none,        &none,        &cad,         &none,         &sys_reset,
         &none,       &none,       &none,       &none,       &none,   &kp C_PWR,         &kp HOME,    &kp PG_UP, &bt BT_SEL 0, &bt BT_SEL 1, &bt BT_SEL 2, &bt BT_SEL 3, &bt BT_SEL 4,  &bt BT_CLR,
                      &tog L_SYS,  &none,       &none,       &none,   &none,            &kp END,     &kp PG_DN, &none,        &none,        &none,        &none,        &tog L_SYS
       )>;
